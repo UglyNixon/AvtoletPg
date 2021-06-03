@@ -5,7 +5,6 @@ import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/constant';
 
 const Auth = () => {
     const location = useLocation()
-
     const isLogin = location.pathname===LOGIN_ROUTE
 
     return (

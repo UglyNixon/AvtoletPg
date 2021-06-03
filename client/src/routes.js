@@ -1,8 +1,11 @@
-import { ADMIN_ROUTE, MAIN_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, WORKER_ROUTE } from "./utils/constant"
+import { ADMIN_ROUTE, MAIN_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, RUCHKA_ROUTE, CHIP_ROUTE, DEVICE_ROUTE, PASSPORT_ROUTE } from "./utils/constant"
 import Admin from "./pages/Admin"
 import Auth from "./pages/Auth"
-import Worker from "./pages/Worker"
+import RuchkaPage from "./pages/ProductsPage/RuchkaPage"
 import Main from "./pages/Main"
+import ChipPage from "./pages/ProductsPage/ChipPage"
+import DevicePage from "./pages/ProductsPage/DevicePage"
+import PassportPage from "./pages/ProductsPage/PassportPage"
 
 export const authRoutes = [
     {
@@ -20,12 +23,24 @@ export const publicRoutes = [
         Component:Auth
     },
       {
-        path:WORKER_ROUTE +'/:id',
-        Component:Worker
+        path:RUCHKA_ROUTE,
+        Component:RuchkaPage
     },
     {
       path:MAIN_ROUTE,
       Component:Main
+  },
+  {
+      path:CHIP_ROUTE,
+      Component:ChipPage
+  },
+  {
+      path:DEVICE_ROUTE,
+      Component:DevicePage
+  },
+  {
+      path:PASSPORT_ROUTE,
+      Component:PassportPage
   }
 
 ]

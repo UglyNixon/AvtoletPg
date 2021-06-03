@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Worker = () => {
+const DevicePage = () => {
     return (
         <div>
-            WORKER
+            Device_page
         </div>
     );
 };
 
-export default Worker;
+export default DevicePage;
