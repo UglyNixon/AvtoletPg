@@ -7,7 +7,7 @@ const RuchkaPage = () => {
     const {product}= useContext(Context)
     
     return (
-       <Container style={{marginTop:'25%'}}>
+       <Container style={{marginTop:'15%',marginLeft:0}}>
            <RuchkaTable/>
        </Container>
     );

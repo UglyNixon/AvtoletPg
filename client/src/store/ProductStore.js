@@ -16,16 +16,16 @@ export default class RuchkaStore {
                     dolg:25,
                     status:true,
                     date: '01/21',
-                    brak:25,
+                    brak:10,
                     productId:1,
                     workerId:1
                 },  {
                     id:1,
                     series:210008,
                     totalValue:1000,
-                    dolg:25,
+                    dolg:17,
                     status:true,
-                    date: '01/21',
+                    date: '02/21',
                     brak:25,
                     productId:1,
                     workerId:2
@@ -35,18 +35,18 @@ export default class RuchkaStore {
                     totalValue:1000,
                     dolg:25,
                     status:true,
-                    date: '01/21',
-                    brak:25,
+                    date: '03/21',
+                    brak:32,
                     productId:1,
                     workerId:3
                 },  {
                     id:1,
                     series:210015,
                     totalValue:1000,
-                    dolg:25,
+                    dolg:46,
                     status:true,
-                    date: '01/21',
-                    brak:25,
+                    date: '04/21',
+                    brak:98,
                     productId:1,
                     workerId:1
                 },
