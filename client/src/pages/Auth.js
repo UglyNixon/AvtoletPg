@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Container, Form, Row } from 'react-bootstrap';
 import {NavLink, useLocation} from 'react-router-dom'
+import { login, registration } from '../http/userApi';
 import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/constant';
 
 const Auth = () => {
     const location = useLocation()
     const isLogin = location.pathname===LOGIN_ROUTE
+    const [login,setLogin]= useState('')
+    const [password,setPassword]=useState('')
+    const authFunc = async ()=>{
+        if (isLogin) {
+            const response = await login();
+            console.log(response)
 
+    }else {
+        const response = await registration();
+            console.log(response)
+    }
+    }
     return (
         <div>
         <Container className='d-flex justify-content-center align-items-center' style={{height:window.innerHeight - 54}}>
@@ -30,7 +42,9 @@ const Auth = () => {
     </div>
 
 }
-    <Button variant='outline-success'> {isLogin ? 'Войти':'Зарегестрироваться'}</Button>
+    <Button 
+    onclick={authFunc}
+    variant='outline-success'> {isLogin ? 'Войти':'Зарегестрироваться'}</Button>
 </Row>
             </Form>
            </Card>
