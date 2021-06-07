@@ -9,7 +9,12 @@ import {observer} from 'mobx-react-lite'
 const NavBar = observer(() => {
     const history=useHistory()
     const {user} = useContext(Context);
-    console.log(user.isAuth)
+
+    function outFunc(){
+     user.setUser({});
+     user.setIsAuth(false);
+     localStorage.removeItem('token')
+    }
     return (
     
     <Navbar bg="dark" variant="dark">
@@ -23,7 +28,7 @@ const NavBar = observer(() => {
      {user.isAuth ?
                 <Nav>
                 <Button variant="outline-light" className='ml-3'>Админ панель</Button>
-                <Button variant="outline-light" className='ml-3'>Выход</Button>
+                <Button variant="outline-light" className='ml-3' onClick={outFunc}>Выход</Button>
                 </Nav>
                 :
                 <Nav>
