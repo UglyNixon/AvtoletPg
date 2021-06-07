@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {Navbar,Form,Nav, FormControl, Button} from "react-bootstrap"
 import {NavLink, useHistory} from 'react-router-dom'
-import { MAIN_ROUTE } from '../utils/constant';
+import { LOGIN_ROUTE, MAIN_ROUTE } from '../utils/constant';
 import styles from '../styles/mystyle.module.css';
 import { Context } from '..';
 import {observer} from 'mobx-react-lite'
@@ -28,7 +28,7 @@ const NavBar = observer(() => {
                 :
                 <Nav>
                
-                <Button variant="outline-light" className='ml-3'>Авторизация</Button>
+                <Button variant="outline-light" className='ml-3' onClick={()=>history.push(LOGIN_ROUTE)}>Авторизация</Button>
                 </Nav>
      }
     </Form>
