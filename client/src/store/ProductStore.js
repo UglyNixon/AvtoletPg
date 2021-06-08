@@ -4,10 +4,8 @@ export default class RuchkaStore {
 
         constructor() {
             this._workers=[
-               { id:1,code:47},
-               { id:2,code:48},
-               { id:3,code:49},
             ]
+            this._workerPlace =[]
             this._ruchki=[
                 {
                     id:1,
@@ -69,6 +67,7 @@ export default class RuchkaStore {
                     title:'Паспорта',
                     img:'ac1dcd76-88c7-4cd6-802a-bd7cebf513cf.jpeg'
                 }]
+                this._selectedPlace={}
 
          
             makeAutoObservable(this)
@@ -83,8 +82,17 @@ export default class RuchkaStore {
         setRuchki (ruchki) {
             this._ruchki=ruchki
         }
+        setWorkerPlace(workerPlace){
+            this._workerPlace=workerPlace
+        }
+        setSelectedPlace(place){
+            this._selectedPlace=place
+        }
        get workers (){
            return this._workers
+       }
+       get workerPlace (){
+           return this._workerPlace
        }
        get product (){
         return this._product
@@ -92,6 +100,9 @@ export default class RuchkaStore {
        get ruchki (){
         return this._ruchki
     }
+        get selectedPlace(){
+            return this._selectedPlace
+        }
 
 
 

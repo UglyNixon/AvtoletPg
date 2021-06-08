@@ -10,7 +10,7 @@ class workerPlaceController {
         try {
             const {title} =req.body;
             const workerPlace = await WorkerPlace.create({title})
-            return res.json(workerPlcae)
+            return res.json(workerPlace)
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }

@@ -9,11 +9,11 @@ class workerController {
 
     async create (req,res,next){
         try {
-            const {name,surname,code,wStatus} =req.body;
+            const {name,surname,code,workerPlaceId} =req.body;
             const {img} = req.files;
             let fileName = uuid.v4()+'.jpeg';
             img.mv(path.resolve(__dirname,'..','static',fileName))
-            const worker = await Worker.create({name,surname,code,wStatus: wStatus ,img:fileName})
+            const worker = await Worker.create({name,surname,code,workerPlaceId,img:fileName})
             return res.json(worker)
         } catch (error) {
             next(ApiError.badRequest(error.message))

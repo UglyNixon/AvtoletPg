@@ -6,8 +6,7 @@ class ruchkaController {
 
     async create(req,res,next) {
         try {
-
-            const {series,totalValue,workerId,defec,date}=req.body;
+        const {series,totalValue,workerId,defec,date}=req.body;
         const ruchka = await Ruchka.create({series,totalValue,workerId,productId,date})
         if (defec) {
     defec = JSON.parse(defec)
