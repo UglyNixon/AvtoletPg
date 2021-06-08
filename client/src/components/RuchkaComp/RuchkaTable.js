@@ -5,14 +5,14 @@ import TableThSt from '../TableThSt';
 import styles from '../../styles/table.module.css';
 import TableTh from '../TableTh';
 import RuchkaTableTr from './RuchkaTableTr';
-const RuchkaTable = () => {
-   const {product}=useContext(Context)
+import { observer } from 'mobx-react-lite';
+const RuchkaTable = observer(() => {
+   const {product,user}=useContext(Context)
    const ruchki=product.ruchki
    const dates = [];
    product.ruchki.map(item=>{
        dates.push({code:item.date})
-        })
-      
+        })   
     return (
         <Table striped bordered hover variant="dark">
   <thead>
@@ -45,6 +45,6 @@ const RuchkaTable = () => {
   </tbody>
 </Table>
     );
-};
+})
 
 export default RuchkaTable;

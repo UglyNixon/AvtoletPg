@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {Navbar,Form,Nav, FormControl, Button} from "react-bootstrap"
 import {NavLink, useHistory} from 'react-router-dom'
-import { LOGIN_ROUTE, MAIN_ROUTE } from '../utils/constant';
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE } from '../utils/constant';
 import styles from '../styles/mystyle.module.css';
 import { Context } from '..';
 import {observer} from 'mobx-react-lite'
@@ -10,7 +10,7 @@ const NavBar = observer(() => {
     const history=useHistory()
     const {user} = useContext(Context);
 
-    function outFunc(){
+    const outFunc= ()=>{
      user.setUser({});
      user.setIsAuth(false);
      localStorage.removeItem('token')
@@ -27,8 +27,8 @@ const NavBar = observer(() => {
     <Form inline>
      {user.isAuth ?
                 <Nav>
-                <Button variant="outline-light" className='ml-3'>Админ панель</Button>
-                <Button variant="outline-light" className='ml-3' onClick={outFunc}>Выход</Button>
+                <Button variant="outline-light" className='ml-3' onClick={()=>history.push(ADMIN_ROUTE)}>Админ панель</Button>
+                <Button variant="outline-light" className='ml-3' onClick={()=>outFunc()}>Выход</Button>
                 </Nav>
                 :
                 <Nav>

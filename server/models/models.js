@@ -7,7 +7,6 @@ const Worker = sequelize.define('worker',
         name:{type:DataTypes.STRING,unique:false,allowNull:false},
         surname:{type:DataTypes.STRING,unique:false,allowNull:false},
         code:{type:DataTypes.INTEGER,unique:true,allowNull:false},
-        wStatus:{type:DataTypes.STRING,defaultValue:'не работает'},
         img:{type:DataTypes.STRING,defaultValue:''}
 
     },{
@@ -52,6 +51,14 @@ const Product = sequelize.define('product',{
 },{
         timestamps: false
 })
+
+const WorkerPlace = sequelize.define('workerPlace',{
+    id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+    title:{type:DataTypes.STRING,unique:true},
+},{
+        timestamps: false
+})
+
 Product.hasMany(Ruchka);
 Ruchka.belongsTo(Product);
 
@@ -61,11 +68,14 @@ Ruchka.belongsTo(Worker)
 Ruchka.hasMany(Defec,{as:'defec'});
 Defec.belongsTo(Ruchka)
 
+WorkerPlace.hasMany(Worker);
+Worker.belongsTo(WorkerPlace);
 
 module.exports= {
     Worker,
     Ruchka,
     Defec,
     User,
-    Product
+    Product,
+    WorkerPlace
 }
