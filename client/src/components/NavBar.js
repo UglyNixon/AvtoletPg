@@ -18,7 +18,8 @@ const NavBar = observer(() => {
     return (
     
     <Navbar bg="dark" variant="dark">
-        <NavLink to={MAIN_ROUTE} className={styles.links}>Home</NavLink>
+
+    <NavLink to={MAIN_ROUTE} className={styles.links}>Ручки</NavLink>
     <Nav   className="mr-auto ml-5">
     <NavLink to={RUCHKA_ROUTE} className={styles.links}>Ручки</NavLink>
     <NavLink to={CHIP_ROUTE} className={styles.links}>Платы</NavLink>

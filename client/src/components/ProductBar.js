@@ -7,13 +7,13 @@ import ProductsCard from './ProductsCard';
 
 const ProductBar = () => {
     const {product} = useContext(Context)
-    useEffect(()=>{
-        fetchProducts().then(data=>product.setProducts(data))
-    },[])
+   
+   
     const history=useHistory()
     return (
      
             <CardGroup>
+               
                           {product.products.map(prod=>
                             <ProductsCard key={prod.id} product={prod} onClick={history.push(`/${prod.title}`)}/>)} 
     
