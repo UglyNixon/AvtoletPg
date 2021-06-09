@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {Navbar,Form,Nav, FormControl, Button} from "react-bootstrap"
 import {NavLink, useHistory} from 'react-router-dom'
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE } from '../utils/constant';
+import { ADMIN_ROUTE, CHIP_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PASSPORT_ROUTE, RUCHKA_ROUTE } from '../utils/constant';
 import styles from '../styles/mystyle.module.css';
 import { Context } from '..';
 import {observer} from 'mobx-react-lite'
@@ -20,9 +20,9 @@ const NavBar = observer(() => {
     <Navbar bg="dark" variant="dark">
         <NavLink to={MAIN_ROUTE} className={styles.links}>Home</NavLink>
     <Nav   className="mr-auto ml-5">
-    <NavLink to={MAIN_ROUTE} className={styles.links}>Ручки</NavLink>
-    <NavLink to={MAIN_ROUTE} className={styles.links}>Платы</NavLink>
-    <NavLink to={MAIN_ROUTE} className={styles.links}>Паспорта</NavLink>
+    <NavLink to={RUCHKA_ROUTE} className={styles.links}>Ручки</NavLink>
+    <NavLink to={CHIP_ROUTE} className={styles.links}>Платы</NavLink>
+    <NavLink to={PASSPORT_ROUTE} className={styles.links}>Паспорта</NavLink>
     </Nav>
     <Form inline>
      {user.isAuth ?

@@ -10,17 +10,21 @@ class workerController {
     async create (req,res,next){
         try {
             const {name,surname,code,workerPlaceId} =req.body;
-            const {img} = req.files;
-            let fileName = uuid.v4()+'.jpeg';
-            img.mv(path.resolve(__dirname,'..','static',fileName))
-            const worker = await Worker.create({name,surname,code,workerPlaceId,img:fileName})
+            try {
+                const {img} = req.files;
+                let fileName = uuid.v4()+'.jpeg';
+                img.mv(path.resolve(__dirname,'..','static',fileName))
+                const worker = await Worker.create({name,surname,code,workerPlaceId,img:fileName})
+            }finally{
+            const worker = await Worker.create({name,surname,code,workerPlaceId})
             return res.json(worker)
+            }
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
     }
     async getAll(req,res,next) {
-        const {code,wStatus} = req.query;
+
         
         try {
             const {code,wStatus} = req.query;

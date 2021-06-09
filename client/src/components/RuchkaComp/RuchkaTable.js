@@ -1,18 +1,30 @@
-import React, { useContext} from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useContext, useEffect, useState} from 'react';
+import { Container, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
 import TableThSt from '../TableThSt';
 import styles from '../../styles/table.module.css';
 import TableTh from '../TableTh';
 import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
+import { fetchWorker } from '../../http/ProductApi';
 const RuchkaTable = observer(() => {
-   const {product,user}=useContext(Context)
-   const ruchki=product.ruchki
+   const {ruchki,product}=useContext(Context)
+  
+   const [loading,setLoading]=useState(true)
+   useEffect (()=>fetchWorker().then(data=>product.setWorkers(data)).finally(()=>setLoading(false)),[])
    const dates = [];
-   product.ruchki.map(item=>{
+   ruchki.ruchki.map(item=>{
        dates.push({code:item.date})
         })   
+ if (loading) {
+   return (
+  <Container  className='d-flex justify-content-center align-items-center' style={{height:window.innerHeight - 54}}>
+
+  <Spinner animation="grow" variant="dark" />
+  </Container>
+   )
+ }else {
+        
     return (
         <Table striped bordered hover variant="dark">
   <thead>
@@ -41,10 +53,10 @@ const RuchkaTable = observer(() => {
     </tr>
   </thead>
   <tbody>
-    {ruchki.map(item=><RuchkaTableTr key={item.series} ruchka={item}/>)}
+    {ruchki.ruchki.map(item=><RuchkaTableTr key={item.series} ruchka={item}/>)}
   </tbody>
 </Table>
-    );
+    );}
 })
 
 export default RuchkaTable;

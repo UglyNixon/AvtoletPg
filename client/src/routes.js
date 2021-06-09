@@ -22,14 +22,14 @@ export const publicRoutes = [
         path:REGISTRATION_ROUTE,
         Component:Auth
     },
-      {
+    {
         path:RUCHKA_ROUTE,
         Component:RuchkaPage
     },
     {
       path:MAIN_ROUTE,
       Component:Main
-  },
+     },
   {
       path:CHIP_ROUTE,
       Component:ChipPage

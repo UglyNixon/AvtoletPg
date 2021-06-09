@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Dropdown, Form, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import { Context } from '../..';
-import {createWorker, fetchWorkerPlace} from '../../http/WorkerApi'
+import {createWorker, fetchWorkerPlace} from '../../http/ProductApi'
 
 
 const CreateWorkers = observer(({show,onHide}) => {
@@ -25,7 +25,17 @@ const CreateWorkers = observer(({show,onHide}) => {
     formData.append('img',file)
     formData.append ('workerPlaceId',product.selectedPlace.id)
     
-   createWorker(formData).then(data=>onHide())
+   createWorker(formData)
+   .then(()=>{
+    setName('');
+    setSurname('');
+    setCode('');
+    setFile(null);
+    product.setSelectedPlace({}) })
+    .then(()=>alert('Готово!'))
+    .then(data=>onHide()).catch(error => alert(error.message));
+ 
+  
   
   }
     return ( 

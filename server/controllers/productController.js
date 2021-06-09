@@ -17,6 +17,18 @@ class productController {
        
     }
     async getAll(req,res) {
+        try {
+        const {id,title} = req.query;
+        let products;
+        if (!id&&!title){
+            products = await Product.findAll()
+        }
+        return res.json(products)
+            
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+
 
     }
  

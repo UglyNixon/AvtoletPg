@@ -22,7 +22,13 @@ export const createWorker =async (formData) =>{
 }
 
 export const fetchWorker =async () =>{
-    const {data} = await $host.get('api/workerPlace')
+    const {data} = await $host.get('api/worker')
      return data
+
+}
+
+export const fetchProducts= async()=>{
+const {data} =await $host.get('api/product')
+return data;
 
 }
