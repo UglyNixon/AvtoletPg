@@ -4,7 +4,7 @@ import { Button, Card, Container, Form, Row } from 'react-bootstrap';
 import {NavLink, useHistory, useLocation} from 'react-router-dom'
 import { Context } from '..';
 import { login, registration } from '../http/userApi';
-import { LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../utils/constant';
+import { LOGIN_ROUTE, MAINPAGE_ROUTE, REGISTRATION_ROUTE } from '../utils/constant';
 
 const Auth = observer(() => {
     const {user} = useContext(Context)
@@ -26,7 +26,7 @@ const Auth = observer(() => {
     }
     user.setUser(data)
     user.setIsAuth(true)
-    history.push(MAIN_ROUTE)
+    history.push(MAINPAGE_ROUTE)
             } catch (error) {
                 alert(error.response.data.message)
             }

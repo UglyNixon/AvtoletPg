@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {Switch,Route,Redirect}  from 'react-router-dom';
-import { MAIN_ROUTE } from '../utils/constant';
+import { MAINPAGE_ROUTE } from '../utils/constant';
 import {authRoutes,publicRoutes} from '../routes'
 import { Context } from '../index';
 const AppRouter = () => {
@@ -14,7 +14,7 @@ const AppRouter = () => {
     {publicRoutes.map(({path,Component})=>
     <Route key={path} path={path} component={Component} exact/>
     )}
-      <Redirect to={MAIN_ROUTE}/>
+      <Redirect to={MAINPAGE_ROUTE}/>
    </Switch>
  );
 };

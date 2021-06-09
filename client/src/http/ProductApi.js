@@ -32,3 +32,9 @@ const {data} =await $host.get('api/product')
 return data;
 
 }
+
+export const createProduct =async (formData) =>{
+    const {data} = await $authHost.post('api/product',formData)
+ 
+    return data
+}

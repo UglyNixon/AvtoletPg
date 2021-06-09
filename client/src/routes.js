@@ -1,8 +1,8 @@
-import { ADMIN_ROUTE, MAIN_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, RUCHKA_ROUTE, CHIP_ROUTE, DEVICE_ROUTE, PASSPORT_ROUTE } from "./utils/constant"
+import { ADMIN_ROUTE, MAINPAGE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, RUCHKA_ROUTE, CHIP_ROUTE, DEVICE_ROUTE, PASSPORT_ROUTE } from "./utils/constant"
 import Admin from "./pages/Admin"
 import Auth from "./pages/Auth"
 import RuchkaPage from "./pages/ProductsPage/RuchkaPage"
-import Main from "./pages/Main"
+import MainPage from "./pages/MainPage"
 import ChipPage from "./pages/ProductsPage/ChipPage"
 import DevicePage from "./pages/ProductsPage/DevicePage"
 import PassportPage from "./pages/ProductsPage/PassportPage"
@@ -27,8 +27,8 @@ export const publicRoutes = [
         Component:RuchkaPage
     },
     {
-      path:MAIN_ROUTE,
-      Component:Main
+      path:MAINPAGE_ROUTE,
+      Component:MainPage
      },
   {
       path:CHIP_ROUTE,
