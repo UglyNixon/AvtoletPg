@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState} from 'react';
 import { Container, Dropdown, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
-import TableThSt from '../TableThSt';
+
 import styles from '../../styles/table.module.css';
-import TableTh from '../TableTh';
+
 import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
@@ -15,6 +15,7 @@ const RuchkaTable = observer(() => {
    const [dolg,setDolg]=useState('Все')
    const [status,setStatus]=useState('Все')
    const [brak,setBrak]=useState('Все')
+   const [sort,setSort]=useState('убыв')
    const [date,setDate]=useState('')
   const workersArr=[]
    useEffect (
@@ -24,7 +25,7 @@ const RuchkaTable = observer(() => {
       data.unshift({surname:'Все'})
       product.setWorkers(data)})
     .then(()=>fetchRuchka())
-    .then(data=>ruchki.setRuchki(data))
+    .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
     .then(()=>{
       let set=new Set()
       ruchki.ruchki.forEach(item =>{
@@ -63,7 +64,14 @@ const RuchkaTable = observer(() => {
     </tr>
     <tr>
       <th className={styles.th}> 
-        <TableThSt/>
+      <Dropdown >
+                <Dropdown.Toggle style={{width:196}} >{sort}</Dropdown.Toggle>
+                <Dropdown.Menu>
+                              <Dropdown.Item  onClick={()=>setSort('Убыв')}>Убыв</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>setSort('Возр')}>Возр</Dropdown.Item>
+                              
+                </Dropdown.Menu>
+      </Dropdown>
     </th>
       <th className={styles.th}>
       <Dropdown >

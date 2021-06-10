@@ -6,7 +6,7 @@ const RuchkaTableTr = (props) => {
     return (
         <tr>
                 <td>{ruchka.series}</td>
-                <td>{ruchka.workerId}</td>
+                <td>{workers.filter(item=>item.id===ruchka.workerId)[0].surname}</td>
                 <td>{ruchka.totalValue}</td>
                 <td>{ruchka.dolg}</td>
                 <td>{ruchka.status?'Сдано':'В работе'}</td>
