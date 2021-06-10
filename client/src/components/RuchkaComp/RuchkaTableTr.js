@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const RuchkaTableTr = (props) => {
-    const ruchka = props.ruchka;
+    const {ruchka,workers} = props;
+  
     return (
         <tr>
                 <td>{ruchka.series}</td>

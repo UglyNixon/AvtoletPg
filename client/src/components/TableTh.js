@@ -7,6 +7,7 @@ const TableTh = observer((props) => {
   const list= props.list
   
         const [title,setTitle] = useState(list[0].code)
+        
    return (
           <Dropdown >
                 <Dropdown.Toggle style={{width:196}} >{title}</Dropdown.Toggle>

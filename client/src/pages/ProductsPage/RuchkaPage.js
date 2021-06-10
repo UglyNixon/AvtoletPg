@@ -13,7 +13,7 @@ const RuchkaPage = observer(() => {
     return (
 
 
-      <Container style={{marginTop:'15%',marginLeft:0}}>
+      <Container style={{marginTop:'5%',marginLeft:0}}>
         <CreateRuchka show={modVis} onHide={()=>setModVis(false)} />
 {user.isAuth?
     <Container className='d-flex mb-3 flex-column justify-content-space-between' >

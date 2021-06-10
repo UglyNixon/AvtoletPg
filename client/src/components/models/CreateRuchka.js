@@ -4,23 +4,22 @@ import { Button, Dropdown, Form, FormCheck, FormControl, InputGroup, Modal } fro
 import { Context } from '../..';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchProducts } from '../../http/ProductApi';
+import { createRuchka } from '../../http/ruchkaApi';
 
 const CreateRuchka = observer(({show,onHide}) => {
     const {product} = useContext(Context)
   useEffect(()=>{
-    
-    
     fetchWorker().then(data=>product.setWorkers(data))
     fetchProducts().then(data=>product.setProducts(data))
   },[])
    const [series,setSeries]= useState('')
-   const [totalValue,setTotalValue]=useState()
+   const [totalValue,setTotalValue]=useState(1000)
    const [dolg,setDolg]=useState(0)
    const [status,setStatus]=useState(true)
    const [date,setDate]=useState('')
    const [brak,setBrak]=useState(0)
 
-  const addRuchka=()=>{
+    const addRuchka=()=>{
     const formData = new FormData()
     formData.append ('series',series)
     formData.append ('totalValue',totalValue)
@@ -29,23 +28,12 @@ const CreateRuchka = observer(({show,onHide}) => {
     formData.append('status',status)
     formData.append ('date',date)
     formData.append ('workerId',product.selectedWorker.id)
-    formData.append ('productId',product.products.filter(item=>item.title=='Ручка').id)
-
-    
-  //  createWorker(formData)
-  //  .then(()=>{
-  //   setName('');
-  //   setSurname('');
-  //   setCode('');
-  //   setFile(null);
-  //   product.setSelectedPlace({}) })
-  //   .then(()=>alert('Готово!'))
-  //   .then(data=>onHide()).catch(error => alert(error.message));
-
+    formData.append ('productId',product.products.filter(item=>item.title==='Ручки')[0].id)
+    createRuchka(formData)
+        .then(()=>alert('Готово!'))
+        .catch(error => alert(error.message));
   }
-
     return ( 
-       
     <Modal
       show={show}
       onHide={onHide}
@@ -146,7 +134,7 @@ const CreateRuchka = observer(({show,onHide}) => {
 
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="success" onClick={addRuchka()}>Добавить</Button>
+        <Button variant="success" onClick={()=>addRuchka()}>Добавить</Button>
         <Button variant="warning" onClick={onHide}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
