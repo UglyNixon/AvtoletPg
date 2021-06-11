@@ -11,3 +11,8 @@ export const fetchRuchka= async()=>{
     return data;
     
     }
+    export const filterRuchka= async(formData)=>{
+        const {data} =await $host.get('api/ruchka/f',formData)
+        return data;
+        
+        }

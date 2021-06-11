@@ -7,8 +7,8 @@ import styles from '../../styles/table.module.css';
 import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
-import { fetchRuchka } from '../../http/ruchkaApi';
-import { storedAnnotationsSymbol } from 'mobx/dist/internal';
+import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
+
 const RuchkaTable = observer(() => {
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
@@ -23,7 +23,21 @@ const RuchkaTable = observer(() => {
     /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
    }
    const sortDB=()=>{
-     console.log(workerName)
+     if(true){
+
+      const formData = new FormData()
+      formData.append ('dolg',/Есть/.test(status)? true : /Все/.test(status)? 'all' :false)
+      formData.append ('brak',/100/.test(brak)? 100:/Все/.test(brak) ? 'all': 99 )
+      formData.append('status',/Сдано/.test(status)? true : /Все/.test(status)? 'all' :false)
+      formData.append ('date',date)
+      formData.append ('workerId',product.workers.filfet(item=>item.surname==='workerName')[0].id)
+   
+      filterRuchka(formData)
+          .then(()=>alert('Готово!'))
+          .catch(error => alert(error.message));
+     }
+  
+
    }
    
   const workersArr=[]
@@ -124,7 +138,7 @@ const RuchkaTable = observer(() => {
                 <Dropdown.Toggle style={{width:80}} >{brak}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>setBrak('Все')}>Все</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setBrak('0...100')}>0...100</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>setBrak('0...99')}>0...100</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>setBrak('100...')}>100...</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>

@@ -30,6 +30,19 @@ class ruchkaController {
           include:[{model:Defec,as:'defec'}]})
           return res.json(ruchka)
     }
+    async filter(req,res,next) {
+                try {
+                    const {dolg,brak,status,date,workerId}=req.body;
+                    const ruchka = await Ruchka.findAll ({where:
+                        { [Op.gt]:{Dolg:/Есть/.test(status)? 0 : /Все/.test(status)? '-1' :false})
+
+
+
+                } catch (error) {
+                    next(ApiError.badRequest(error.message)) 
+                }
+
+    }
   
 
 }
