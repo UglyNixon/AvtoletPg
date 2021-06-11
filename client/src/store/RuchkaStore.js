@@ -20,8 +20,19 @@ export default class RuchkaStore {
         setWorkers (workers) {
             this._workers=workers
         }
-       
-       get ruchki (){
+       sortAll(p,ruchki) {
+         
+       return p? ruchki.sort((a,b)=>b.series-a.series) :ruchki.sort((a,b)=>a.series-b.series)
+       }
+        sortMax() {
+        //    тут можно гораздо проще сортировать обект полученый, но для практики реализация именно через запросы
+
+        }
+
+
+
+
+     get ruchki (){
         return this._ruchki
     }
      get dates (){

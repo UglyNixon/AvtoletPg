@@ -8,6 +8,7 @@ import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchRuchka } from '../../http/ruchkaApi';
+import { storedAnnotationsSymbol } from 'mobx/dist/internal';
 const RuchkaTable = observer(() => {
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
@@ -15,8 +16,16 @@ const RuchkaTable = observer(() => {
    const [dolg,setDolg]=useState('Все')
    const [status,setStatus]=useState('Все')
    const [brak,setBrak]=useState('Все')
-   const [sort,setSort]=useState('убыв')
+   const [sort,setSort]=useState('Убыв')
    const [date,setDate]=useState('')
+   const sortAll=(value)=>{
+    ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),ruchki.ruchki));
+    /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
+   }
+   const sortDB=()=>{
+     console.log(workerName)
+   }
+   
   const workersArr=[]
    useEffect (
      ()=>
@@ -65,31 +74,31 @@ const RuchkaTable = observer(() => {
     <tr>
       <th className={styles.th}> 
       <Dropdown >
-                <Dropdown.Toggle style={{width:196}} >{sort}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:120}} >{sort}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                              <Dropdown.Item  onClick={()=>setSort('Убыв')}>Убыв</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setSort('Возр')}>Возр</Dropdown.Item>
+                              <Dropdown.Item  onClick={(e)=>sortAll(e.target.innerHTML)}>Убыв</Dropdown.Item>
+                              <Dropdown.Item  onClick={(e)=>sortAll(e.target.innerHTML)}>Возр</Dropdown.Item>
                               
                 </Dropdown.Menu>
       </Dropdown>
     </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:196}} >{workerName||'Все'}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:126}} >{workerName||'Все'}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
                       product.workers.map(wor=>
-                              <Dropdown.Item key={wor.surname} onClick={()=>setWorkerName(wor.surname)}>{wor.surname}</Dropdown.Item>
+                              <Dropdown.Item key={wor.surname} onClick={()=>{setWorkerName(wor.surname);sortDB()}}>{wor.surname}</Dropdown.Item>
                       )
                       }
                 </Dropdown.Menu>
             </Dropdown>
 
       </th>
-      <th className={styles.th}>шт.</th>
+      <th className={styles.th}  style={{width:20}}>шт.</th>
       <th className={styles.th}>
               <Dropdown >
-                <Dropdown.Toggle style={{width:196}} >{dolg}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:60}} >{dolg}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>setDolg('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>setDolg('Есть')}>Есть</Dropdown.Item>
@@ -99,7 +108,7 @@ const RuchkaTable = observer(() => {
             </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:196}} >{status}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{status}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>setStatus('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>setStatus('Сдано')}>Сдано</Dropdown.Item>
@@ -112,7 +121,7 @@ const RuchkaTable = observer(() => {
       <th className={styles.th}>
 
             <Dropdown > 
-                <Dropdown.Toggle style={{width:196}} >{brak}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{brak}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>setBrak('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>setBrak('0...100')}>0...100</Dropdown.Item>
@@ -125,7 +134,7 @@ const RuchkaTable = observer(() => {
       </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:196}} >{date||'Все'}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{date||'Все'}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
                      
