@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { Container, Dropdown, Spinner, Table } from 'react-bootstrap';
+import { Container, Dropdown, NavItem, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
 
 import styles from '../../styles/table.module.css';
@@ -12,40 +12,69 @@ import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
 const RuchkaTable = observer(() => {
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
-   const [workerName,setWorkerName]=useState('')
+   const [workerName,setWorkerName]=useState('Все')
    const [dolg,setDolg]=useState('Все')
    const [status,setStatus]=useState('Все')
    const [brak,setBrak]=useState('Все')
    const [sort,setSort]=useState('Убыв')
-   const [date,setDate]=useState('')
+   const [date,setDate]=useState('Все')
    const sortAll=(value)=>{
     ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),ruchki.ruchki));
     /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
    }
-   const sortDB=()=>{
+   const sortDB=(d=dolg,b=brak,s=status,da=date,name=workerName)=>{
      if(true){
-
       const formData = new FormData()
-      formData.append ('dolg',/Есть/.test(status)? true : /Все/.test(status)? 'all' :false)
-      formData.append ('brak',/100/.test(brak)? 100:/Все/.test(brak) ? 'all': 99 )
-      formData.append('status',/Сдано/.test(status)? true : /Все/.test(status)? 'all' :false)
-      formData.append ('date',date)
-      formData.append ('workerId',product.workers.filfet(item=>item.surname==='workerName')[0].id)
-   
-      filterRuchka(formData)
-          .then(()=>alert('Готово!'))
-          .catch(error => alert(error.message));
-     }
-  
+      formData.append ('dolgp',/Есть/.test(d)? true : /Все/.test(d)? 'all' :false)
+      formData.append ('brakp',/100/.test(b)? 100:/Все/.test(b) ? 'all': 99 )
+      formData.append('statusp',/Сдано/.test(s)? true : /Все/.test(s)? 'all' :false)
+      formData.append ('datep',da)
+      formData.append ('idp',product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['workerId'])
+      console.group('--------****--------------')
+      console.log(formData.getAll('idp'))
+      console.log(formData.getAll('dolg'))
+      console.log(formData.getAll('status'))
+      console.log(formData.getAll('brak'))
+      console.log(formData.getAll('date'))
+      console.groupEnd('````````````*****````````````')
 
+      filterRuchka(formData)
+
+
+     }
    }
-   
-  const workersArr=[]
+   /*      
+     костыли для обхода useState()   
+     подумать как запихнуть в useEffect(()=>{sortDB()},[brak,dolg ...])     
+     вернее как в sort запихнуть проверку на начальное состояние (пустой product.workers)
+   */
+   const dolgSort =(value)=>{
+    setDolg(value);
+    sortDB(value,undefined,undefined,undefined,undefined)
+   }
+   const brakSort =(value)=>{
+    setBrak(value);
+    sortDB(undefined,value,undefined,undefined,undefined)
+   }
+   const statusSort =(value)=>{
+     setStatus(value);
+     sortDB(undefined,undefined,value,undefined,undefined)
+    }
+  const dateSort =(value)=>{
+      setDate(value);
+      sortDB(undefined,undefined,undefined,value,undefined)
+    }
+  const workSort =(value)=>{
+     setWorkerName(value);
+     sortDB(undefined,undefined,undefined,undefined,value)
+    }
+    
+
    useEffect (
      ()=>
      fetchWorker()
     .then(data=>{
-      data.unshift({surname:'Все'})
+      data.unshift({surname:'Все',idp:0})
       product.setWorkers(data)})
     .then(()=>fetchRuchka())
     .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
@@ -61,7 +90,7 @@ const RuchkaTable = observer(() => {
     .finally(()=>setLoading(false))
      ,[])
    
-  
+     
        
  if (loading) {
    return (
@@ -102,7 +131,7 @@ const RuchkaTable = observer(() => {
                 <Dropdown.Menu>
                       {
                       product.workers.map(wor=>
-                              <Dropdown.Item key={wor.surname} onClick={()=>{setWorkerName(wor.surname);sortDB()}}>{wor.surname}</Dropdown.Item>
+                              <Dropdown.Item key={wor.surname} onClick={()=>{workSort(wor.surname)}}>{wor.surname}</Dropdown.Item>
                       )
                       }
                 </Dropdown.Menu>
@@ -114,9 +143,9 @@ const RuchkaTable = observer(() => {
               <Dropdown >
                 <Dropdown.Toggle style={{width:60}} >{dolg}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                              <Dropdown.Item  onClick={()=>setDolg('Все')}>Все</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setDolg('Есть')}>Есть</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setDolg('Нет')}>Нет</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>dolgSort('Все')}>Все</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>dolgSort('Есть')}>Есть</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>dolgSort('Нет')}>Нет</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
             </th>
@@ -124,9 +153,9 @@ const RuchkaTable = observer(() => {
       <Dropdown >
                 <Dropdown.Toggle style={{width:80}} >{status}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                              <Dropdown.Item  onClick={()=>setStatus('Все')}>Все</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setStatus('Сдано')}>Сдано</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setStatus('В работе')}>В работе</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>statusSort('Все')}>Все</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>statusSort('Сдано')}>Сдано</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>statusSort('В работе')}>В работе</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
 
@@ -137,9 +166,9 @@ const RuchkaTable = observer(() => {
             <Dropdown > 
                 <Dropdown.Toggle style={{width:80}} >{brak}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                              <Dropdown.Item  onClick={()=>setBrak('Все')}>Все</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setBrak('0...99')}>0...100</Dropdown.Item>
-                              <Dropdown.Item  onClick={()=>setBrak('100...')}>100...</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>brakSort('Все')}>Все</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>brakSort('0...99')}>0...99</Dropdown.Item>
+                              <Dropdown.Item  onClick={()=>brakSort('100...')}>100...</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
 
@@ -151,9 +180,9 @@ const RuchkaTable = observer(() => {
                 <Dropdown.Toggle style={{width:80}} >{date||'Все'}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
-                     
+                    
                       ruchki.dates.map(date=>
-                              <Dropdown.Item key={date} onClick={()=>setDate(date)}>{date}</Dropdown.Item>
+                              <Dropdown.Item key={date+Math.random() /*придумать другой способ??*/} onClick={()=>dateSort(date)}>{date}</Dropdown.Item>
                       )
                       }
                 </Dropdown.Menu>

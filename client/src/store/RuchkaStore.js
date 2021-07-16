@@ -20,7 +20,7 @@ export default class RuchkaStore {
         setWorkers (workers) {
             this._workers=workers
         }
-       sortAll(p,ruchki) {
+        sortAll(p,ruchki) {
          
        return p? ruchki.sort((a,b)=>b.series-a.series) :ruchki.sort((a,b)=>a.series-b.series)
        }
