@@ -22,7 +22,8 @@ const Ruchka = sequelize.define('ruchka',{
     date:{type:DataTypes.STRING,defaultValue:''},
     brak:{type:DataTypes.INTEGER,defaultValue:0}
 },{
-    timestamps: false
+    timestamps: false,
+  
 })
 
 const Defec = sequelize.define('defec',{

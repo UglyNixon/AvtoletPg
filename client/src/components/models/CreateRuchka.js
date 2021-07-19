@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Dropdown, Form, FormCheck, FormControl, InputGroup, Modal } from 'react-bootstrap';
+import { Button, Dropdown, Form, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import { Context } from '../..';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchProducts } from '../../http/ProductApi';
@@ -18,7 +18,6 @@ const CreateRuchka = observer(({show,onHide}) => {
    const [status,setStatus]=useState(true)
    const [date,setDate]=useState('')
    const [brak,setBrak]=useState(0)
-
     const addRuchka=()=>{
     const formData = new FormData()
     formData.append ('series',series)
@@ -31,6 +30,7 @@ const CreateRuchka = observer(({show,onHide}) => {
     formData.append ('productId',product.products.filter(item=>item.title==='Ручки')[0].id)
     createRuchka(formData)
         .then(()=>alert('Готово!'))
+        .then(()=>onHide())
         .catch(error => alert(error.message));
   }
     return ( 

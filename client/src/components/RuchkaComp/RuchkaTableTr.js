@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from '../../styles/table.module.css';
 const RuchkaTableTr = (props) => {
     const {ruchka,workers} = props;

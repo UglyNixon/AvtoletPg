@@ -1,15 +1,19 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { Container, Dropdown, NavItem, Spinner, Table } from 'react-bootstrap';
+import { Button, Container, Dropdown, NavItem, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
-
+import CreateRuchka from '../models/CreateRuchka';
 import styles from '../../styles/table.module.css';
 
 import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
+import { Fragment } from 'react';
+import RuchkaStats from '../models/RuchkaStats';
 
 const RuchkaTable = observer(() => {
+   const [modVis,setModVis]= useState(false)
+   const [statVis,setStatVis]= useState(false)
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
    const [workerName,setWorkerName]=useState('Все')
@@ -18,36 +22,29 @@ const RuchkaTable = observer(() => {
    const [brak,setBrak]=useState('Все')
    const [sort,setSort]=useState('Убыв')
    const [date,setDate]=useState('Все')
-   const sortAll=(value)=>{
-    ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),ruchki.ruchki));
+   const sortAll=(value,data=ruchki.ruchki)=>{
+    ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),data));
     /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
    }
    const sortDB=(d=dolg,b=brak,s=status,da=date,name=workerName)=>{
-     if(true){
-      const formData = new FormData()
-      formData.append ('dolgp',/Есть/.test(d)? true : /Все/.test(d)? 'all' :false)
-      formData.append ('brakp',/100/.test(b)? 100:/Все/.test(b) ? 'all': 99 )
-      formData.append('statusp',/Сдано/.test(s)? true : /Все/.test(s)? 'all' :false)
-      formData.append ('datep',da)
-      formData.append ('idp',product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['workerId'])
-      console.group('--------****--------------')
-      console.log(formData.getAll('idp'))
-      console.log(formData.getAll('dolg'))
-      console.log(formData.getAll('status'))
-      console.log(formData.getAll('brak'))
-      console.log(formData.getAll('date'))
-      console.groupEnd('````````````*****````````````')
-
-      filterRuchka(formData)
-
-
-     }
-   }
+    
+      const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
+      console.log(d,b,s,da,workerId)
+      filterRuchka(d,b,s,da,workerId)
+      .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
+    }
+   
+  
    /*      
      костыли для обхода useState()   
      подумать как запихнуть в useEffect(()=>{sortDB()},[brak,dolg ...])     
      вернее как в sort запихнуть проверку на начальное состояние (пустой product.workers)
    */
+  /*   
+    d useEffect запихать все изменения в таблице,
+    внутри sortDB сделать провеку на лоад базы
+   должно работать , переписать когда не будет лень
+  */
    const dolgSort =(value)=>{
     setDolg(value);
     sortDB(value,undefined,undefined,undefined,undefined)
@@ -74,7 +71,7 @@ const RuchkaTable = observer(() => {
      ()=>
      fetchWorker()
     .then(data=>{
-      data.unshift({surname:'Все',idp:0})
+      data.unshift({surname:'Все',id:"Все"})
       product.setWorkers(data)})
     .then(()=>fetchRuchka())
     .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
@@ -101,6 +98,15 @@ const RuchkaTable = observer(() => {
  } else {
         
     return (
+  
+       <Fragment >
+         <CreateRuchka show={modVis} onHide={()=>setModVis(false)} />
+         <RuchkaStats show={statVis} onHide={()=>setStatVis(false)}/>
+
+<Container className='mb-3 '>
+ <Button className ='mr-3' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>
+ <Button className ='mr-3' variant="outline-success" onClick={()=>setModVis(true)}>Создать запись</Button>
+</Container> 
         <Table striped bordered hover variant="dark">
   <thead>
   <tr>
@@ -196,6 +202,8 @@ const RuchkaTable = observer(() => {
     {ruchki.ruchki.map(item=><RuchkaTableTr key={item.series} ruchka={item} workers={product.workers}/>)}
   </tbody>
 </Table>
+</Fragment>
+
     );}
 })
 
