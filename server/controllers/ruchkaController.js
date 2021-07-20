@@ -1,6 +1,7 @@
 const {Ruchka, Defec} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const { Op } = require('sequelize')
+const fs = require('fs');
 
 
 class ruchkaController {
@@ -19,7 +20,16 @@ class ruchkaController {
             next(ApiError.badRequest(error.message))
         }
     }
+    async forceCreate (req,res,next) {
+        try {
+            
 
+
+            return res.json('done')
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
+    }
     async getAll(req,res) {
             let ruchki = await Ruchka.findAll()
             res.json(ruchki)

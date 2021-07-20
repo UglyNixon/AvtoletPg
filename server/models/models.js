@@ -59,10 +59,18 @@ const WorkerPlace = sequelize.define('workerPlace',{
 },{
         timestamps: false
 })
+const BackupTable = sequelize.define ('backupTable',{
+    id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+    date :{type:DataTypes.STRING,allowNull:false},
+    ServerDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    jsonData :{type:DataTypes.JSON,allowNull:false}
+    
+},{
+    timestamps: false  
+})
 
 Product.hasMany(Ruchka);
 Ruchka.belongsTo(Product);
-
 Worker.hasMany(Ruchka);
 Ruchka.belongsTo(Worker)
 
@@ -72,11 +80,15 @@ Defec.belongsTo(Ruchka)
 WorkerPlace.hasMany(Worker);
 Worker.belongsTo(WorkerPlace);
 
+Product.hasMany(BackupTable);
+BackupTable.belongsTo(Product)
+
 module.exports= {
     Worker,
     Ruchka,
     Defec,
     User,
     Product,
-    WorkerPlace
+    WorkerPlace,
+    BackupTable
 }

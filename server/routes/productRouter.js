@@ -8,4 +8,5 @@ router.get('/',productController.getAll)
 
 
 
+
 module.exports=router

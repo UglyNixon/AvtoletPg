@@ -38,3 +38,18 @@ export const createProduct =async (formData) =>{
  
     return data
 }
+
+export const fetchOneBackup = async (id) =>{
+const {data} = await $host.get('api/backup/'+id)
+return data
+
+}
+export const fetchBackup = async () =>{
+const {data} = await $host.get('api/backup')
+return data
+}
+
+export const forceBackup =async(formData) =>{
+    const {data} =await $authHost.post('api/backup',formData)
+    return data
+}

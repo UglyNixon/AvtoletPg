@@ -11,8 +11,9 @@ export default class ProductStore {
                ]
                 this._selectedPlace={}
                 this._selectedWorker={}
-
-         
+                this._selectedProduct={}
+               this._backups=[]
+               this._selectedBackup={}
             makeAutoObservable(this)
 
         }
@@ -32,6 +33,15 @@ export default class ProductStore {
         setSelectedWorker(worker){
             this._selectedWorker=worker
         }
+        setSelectedProduct(product){
+            this._selectedProduct=product
+        }
+        setBackup(backups){
+            this._backups=backups
+        }
+        setSelectedBackup(back){
+            this._selectedBackup=back
+        }
        get workers (){
            return this._workers
        }
@@ -47,6 +57,15 @@ export default class ProductStore {
         }
         get selectedWorker(){
             return this._selectedWorker
+        }
+        get selectedProduct(){
+            return this._selectedProduct
+        }
+        get backups(){
+            return this._backups
+        }
+        get selectedBackup(){
+            return this._selectedBackup
         }
 
 

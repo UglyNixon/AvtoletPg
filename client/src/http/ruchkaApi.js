@@ -6,6 +6,7 @@ export const createRuchka =async (formData) =>{
     return data
 }
 
+
 export const fetchRuchka= async()=>{
     const {data} =await $host.get('api/ruchka')
     return data;
@@ -16,3 +17,5 @@ export const fetchRuchka= async()=>{
         return data;
         
         }
+
+   
