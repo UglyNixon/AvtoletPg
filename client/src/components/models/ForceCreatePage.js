@@ -4,7 +4,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, Form, InputGroup, Modal, Row, Tab, Tabs, FormControl } from 'react-bootstrap';
 
 import { Context } from '../..';
-import { fetchBackup,  fetchProducts, forceBackup } from '../../http/ProductApi';
+
+import { fetchBackup,  fetchProducts, forceBackup,saveBackup } from '../../http/ProductApi';
 
 const ForceCreatePage =observer(({show,onHide})  => {
     const [file,setFile] =useState(null)
@@ -23,10 +24,18 @@ const ForceCreatePage =observer(({show,onHide})  => {
       forceBackup(formData)
     
     }
+
+    const clickSaveBackup = ()=> {
+
+      saveBackup('егор')
+
+    }
+
+
+
     useEffect(()=>{
         fetchProducts()
         .then(data=>product.setProducts(data))
-        
         fetchBackup()
         .then(data=>product.setBackup(data))
        
@@ -136,24 +145,22 @@ const ForceCreatePage =observer(({show,onHide})  => {
 </Dropdown>
     </InputGroup>
     <InputGroup className="mb-3">
-    <InputGroup.Text id="inputGroup-sizing-default">Дата :</InputGroup.Text>
-    <Form.Floating className="mb-3">
-    <Form.Control
-      id="floatingInputCustom"
-      type="email"
-      placeholder="name@example.com"
-    />
-    <label htmlFor="floatingInputCustom">Email address</label>
-  </Form.Floating>
-  <Form.Floating>
-    <Form.Control
-      id="floatingPasswordCustom"
-      type="password"
-      placeholder="Password"
-    />
-    <label htmlFor="floatingPasswordCustom">Password</label>
-  </Form.Floating>
-    </InputGroup>
+      <Row>
+      <Col style={{width:'90px',flexGrow:1}}>
+    <InputGroup.Text>Дата :</InputGroup.Text>
+    </Col>
+    <Col style={{width:'48px',padding:0,flexGrow:1}}>
+    <FormControl placeholder={'мм'} maxlength={2} />
+    </Col>
+    <Col style={{width:'30px',padding:0,flexGrow:0}}>
+    <InputGroup.Text>/</InputGroup.Text>
+    </Col>
+    <Col style={{width:'48px',padding:0,flexGrow:1}}>
+    <FormControl  placeholder={'гг'} maxlength={2}/>
+    </Col>
+  
+    </Row>
+  </InputGroup>
     
   </Tab>
   
@@ -168,7 +175,7 @@ const ForceCreatePage =observer(({show,onHide})  => {
                key =='fileForce' ? 
                <Button variant="success" >Сохранить из файла</Button>
                :
-               <Button variant="success" >Сделать Backup таблицы</Button>
+               <Button variant="success" onClick={()=>clickSaveBackup()} >Сделать Backup таблицы</Button>
 
     
           }

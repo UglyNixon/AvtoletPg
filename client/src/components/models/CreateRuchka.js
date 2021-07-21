@@ -2,16 +2,15 @@ import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Dropdown, Form, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import { Context } from '../..';
-import { fetchWorker } from '../../http/ProductApi';
+
 import { fetchProducts } from '../../http/ProductApi';
 import { createRuchka } from '../../http/ruchkaApi';
 
-const CreateRuchka = observer(({show,onHide}) => {
+const CreateRuchka = observer(({show,onHide,workers}) => {
     const {product} = useContext(Context)
   useEffect(()=>{
-    fetchWorker().then(data=>product.setWorkers(data))
     fetchProducts().then(data=>product.setProducts(data))
-  },[])
+  },[product])
    const [series,setSeries]= useState('')
    const [totalValue,setTotalValue]=useState(1000)
    const [dolg,setDolg]=useState(0)
@@ -19,6 +18,9 @@ const CreateRuchka = observer(({show,onHide}) => {
    const [date,setDate]=useState('')
    const [brak,setBrak]=useState(0)
     const addRuchka=()=>{
+      if (product.selectedWorker.id=='Все') {
+        alert( 'Выберите сборщика')
+      } else {
     const formData = new FormData()
     formData.append ('series',series)
     formData.append ('totalValue',totalValue)
@@ -32,7 +34,7 @@ const CreateRuchka = observer(({show,onHide}) => {
         .then(()=>alert('Готово!'))
         .then(()=>onHide())
         .catch(error => alert(error.message));
-  }
+  }}
     return ( 
     <Modal
       show={show}
@@ -111,7 +113,7 @@ const CreateRuchka = observer(({show,onHide}) => {
     </Dropdown.Toggle>
 
     <Dropdown.Menu>
-    {product.workers.map(worker=> <Dropdown.Item  key={worker.id} onClick={()=>product.setSelectedWorker(worker)}>{worker.surname} </Dropdown.Item>)}
+    {workers.map(worker=> <Dropdown.Item  key={worker.id} onClick={()=>product.setSelectedWorker(worker)}>{worker.surname} </Dropdown.Item>)}
     </Dropdown.Menu>
     </Dropdown>
     

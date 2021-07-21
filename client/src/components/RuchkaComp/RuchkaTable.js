@@ -27,11 +27,13 @@ const RuchkaTable = observer(() => {
     /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
    }
    const sortDB=(d=dolg,b=brak,s=status,da=date,name=workerName)=>{
-    
+      console.log(d,b,s,da,name)
+      console.log(product.workers)
+      console.log(product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id'])
       const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
-      console.log(d,b,s,da,workerId)
       filterRuchka(d,b,s,da,workerId)
       .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
+      console.log(product.workers)
     }
    
   
@@ -71,8 +73,9 @@ const RuchkaTable = observer(() => {
      ()=>
      fetchWorker()
     .then(data=>{
-      data.unshift({surname:'Все',id:"Все"})
-      product.setWorkers(data)})
+    data.unshift(new Proxy ({surname:'Все',id:"Все"},{}))
+    product.setWorkers(data)
+    })
     .then(()=>fetchRuchka())
     .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
     .then(()=>{
@@ -100,7 +103,7 @@ const RuchkaTable = observer(() => {
     return (
   
        <Fragment >
-         <CreateRuchka show={modVis} onHide={()=>setModVis(false)} />
+         <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
          <RuchkaStats show={statVis} onHide={()=>setStatVis(false)}/>
 
 <Container className='mb-3 '>
@@ -133,7 +136,7 @@ const RuchkaTable = observer(() => {
     </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:126}} >{workerName||'Все'}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:126}} >{workerName||product.workers[0].id}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
                       product.workers.map(wor=>

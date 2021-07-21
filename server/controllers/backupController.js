@@ -1,9 +1,14 @@
 const ApiError = require("../error/ApiError")
 const { BackupTable, Ruchka } = require("../models/models")
-
+const fs = require('fs');
 
 
 class backupController {
+  async saveBackup (req,res) {
+    res.json('done')
+  }
+
+
     async forceCreate (req,res,next){
 
         try {
@@ -61,7 +66,7 @@ next(ApiError.internal('Такой таблицы не существует'))
     async getAll(req,res,next) {
         try {
             let backup
-           backup = await BackupTable.findAll()
+            backup = await BackupTable.findAll()
             return res.json(backup)
             
         } catch (error) {
@@ -69,6 +74,8 @@ next(ApiError.internal('Такой таблицы не существует'))
         }
 
 }
+
+
 }
 
 module.exports=new backupController()
