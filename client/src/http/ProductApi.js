@@ -53,7 +53,12 @@ export const forceBackup =async(formData) =>{
     const {data} =await $authHost.post('api/backup',formData)
     return data
 }
-export const saveBackup = async ()=> {
-    const {data} = await $host.get('api/backup/save')
+
+export const  forceBackupUseFile=async (formData)=>{
+    const {data} = await $authHost.post('api/backup/useFile',formData)
+    return data
+       }
+export const saveBackup = async (formData)=> {
+    const {data} = await $authHost.post('api/backup/save',formData)
     return data;
 }

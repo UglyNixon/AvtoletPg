@@ -62,6 +62,7 @@ const WorkerPlace = sequelize.define('workerPlace',{
 const BackupTable = sequelize.define ('backupTable',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
     date :{type:DataTypes.STRING,allowNull:false},
+    author :{type:DataTypes.STRING,defaultValue:'если не юзер то кот'},
     ServerDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     jsonData :{type:DataTypes.JSON,allowNull:false}
     
@@ -71,6 +72,7 @@ const BackupTable = sequelize.define ('backupTable',{
 
 Product.hasMany(Ruchka);
 Ruchka.belongsTo(Product);
+
 Worker.hasMany(Ruchka);
 Ruchka.belongsTo(Worker)
 

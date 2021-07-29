@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
+import { Context } from '../..';
 
 const RuchkaStats = observer(({show,onHide}) => {
+  const {ruchki} =useContext(Context)
     return (
         <Modal
       show={show}
@@ -18,31 +20,35 @@ const RuchkaStats = observer(({show,onHide}) => {
       </Modal.Header>
       <Modal.Body>
       <Table striped bordered hover>
-  
+      <thead>
+    <tr>
+      <th>#</th>
+      <th>ФИО</th>
+      <th>Собрано /<br/>
+      % общего
+      </th>
+      <th>Долг кол-во /<br/>
+       серий
+      </th>
+      <th>Брак <br/>
+      % средний
+      </th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
       <td>1</td>
       <td>Mark</td>
       <td>Otto</td>
       <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td colSpan="2">Larry the Bird</td>
-      <td>@twitter</td>
+      <td>@mdo</td>
     </tr>
   </tbody>
 </Table>
     
       </Modal.Body>
       <Modal.Footer>
-        
+        {ruchki.ruchki[0].series}
         <Button variant="warning" onClick={()=>onHide()}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
