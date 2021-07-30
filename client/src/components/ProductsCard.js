@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { CHIP_ROUTE, MAIN_ROUTE, RUCHKA_ROUTE } from '../utils/constant';
+
 
 const ProductsCard = (product) => {
     const history = useHistory()

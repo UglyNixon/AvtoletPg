@@ -72,7 +72,7 @@ const RuchkaTable = observer(() => {
    useEffect (
      ()=>
      fetchWorker()
-    .then(data=>{
+     .then(data=>{
     data.unshift(new Proxy ({surname:'Все',id:"Все"},{}))
     product.setWorkers(data)
     })
@@ -104,7 +104,7 @@ const RuchkaTable = observer(() => {
   
        <Fragment >
          <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
-         <RuchkaStats show={statVis} onHide={()=>setStatVis(false)}/>
+         <RuchkaStats show={statVis} ruchkiTemp={ruchki.ruchki} onHide={()=>setStatVis(false)}/>
 
 <Container className='mb-3 '>
  <Button className ='mr-3' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>

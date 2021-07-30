@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { Card, CardGroup, Container } from 'react-bootstrap';
+import React, { useContext, } from 'react';
+import {  CardGroup,  } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-import { fetchProducts } from '../http/ProductApi';
 import {Context} from '../index'
 import ProductsCard from './ProductsCard';
 

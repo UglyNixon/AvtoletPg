@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Container, Dropdown, Form, InputGroup, Modal, Row, Tab, Tabs, FormControl } from 'react-bootstrap';
+import { Button, Col, Dropdown, Form, InputGroup, Modal, Row, Tab, Tabs, FormControl } from 'react-bootstrap';
 
 import { Context } from '../..';
 import { Check } from '../../helpers/littleFunc';

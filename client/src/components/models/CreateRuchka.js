@@ -18,7 +18,7 @@ const CreateRuchka = observer(({show,onHide,workers}) => {
    const [date,setDate]=useState('')
    const [brak,setBrak]=useState(0)
     const addRuchka=()=>{
-      if (product.selectedWorker.id=='Все') {
+      if (product.selectedWorker.id==='Все') {
         alert( 'Выберите сборщика')
       } else {
     const formData = new FormData()

@@ -41,7 +41,7 @@ case 'Ручки' :
         cascade:true
       })
     data.map(async (item) => {
-await Ruchka.create({brak:item.brak,series:item.series,totalValue:item.totalValue,status:item.status,date:item.date,workerId:item.workerId,productId:item.productId})
+await Ruchka.create({brak:item.brak,series:item.series,dolg:item.dolg,totalValue:item.totalValue,status:item.status,date:item.date,workerId:item.workerId,productId:item.productId})
     })
 break;
 
