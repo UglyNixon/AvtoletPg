@@ -12,7 +12,7 @@ class backupController {
               
                 let data = await Ruchka.findAll()
                 BackupTable.create({author:author,date:date,productId:productId,jsonData:data})
-                fs.writeFileSync(path.resolve(__dirname,'..','static','backup','tempUpload.txt'),JSON.stringify(data))
+                fs.writeFileSync(path.resolve(__dirname,'..','crutches','backup','tempUpload.txt'),JSON.stringify(data))
                 res.json('done');
             } catch (error) {
                 res.json('что-то пошло не так');
@@ -21,7 +21,7 @@ class backupController {
   }
        async saveBackupFile(req,res){
  
-    res.download(path.resolve(__dirname,'..','static','backup','tempUpload.txt'),'tempUpload.txt')
+    res.download(path.resolve(__dirname,'..','crutches','backup','tempUpload.txt'),'tempUpload.txt')
     
    ;
   
@@ -89,8 +89,8 @@ try {
     const author = req.user.login
     const {file} =req.files
     let fileContent
-    file.mv(path.resolve(__dirname,'..','static','backup','tempDownload.txt'),()=>{
-         fileContent = fs.readFileSync(path.resolve(__dirname,'..','static','backup','tempDownload.txt'), "utf8");
+    file.mv(path.resolve(__dirname,'..','crutches','backup','tempDownload.txt'),()=>{
+         fileContent = fs.readFileSync(path.resolve(__dirname,'..','crutches','backup','tempDownload.txt'), "utf8");
          let date  = new Date()
          date = `${(date.getMonth()+1)<10?`0${date.getMonth()+1}`:`${date.getMonth()+1}`}/${date.getFullYear().toString().slice(2)}`
          BackupTable.create({author:author,date:date,productId:productId,jsonData:JSON.parse(fileContent)})

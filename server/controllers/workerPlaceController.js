@@ -19,12 +19,13 @@ class workerPlaceController {
         
         
         try {
+           const {id} = req.query
+           console.log(`id`,id)
+           let  workerPlace;
+            id?    workerPlace = await WorkerPlace.findAll({where:{id}}) : workerPlace = await WorkerPlace.findAll()
            
-        let workerPlace;
         
-            workerPlace = await WorkerPlace.findAll()
-        
-        return res.json(workerPlace)
+         return res.json(workerPlace)
             
         } catch (error) {
             next(ApiError.badRequest(error.message))

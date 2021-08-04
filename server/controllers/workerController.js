@@ -48,12 +48,32 @@ class workerController {
         }
         
     }
-    async getOne(req,res) {
-        const {id}=req.params;
-        const worker = await Worker.findOne({
-         where:{code:id}
-        })
-       return res.json(worker)
+    async getOne(req,res,next) {
+   try {
+   
+    const {id}=req.params;
+    console.log(id)
+    const worker = await Worker.findOne({
+     where:{id}
+    })
+    console.log('send')
+     return res.json(worker)
+   } catch (error) {
+       next(ApiError.badRequest(error.message))
+   }
+
+        
+       
+       
+    }
+    async deleteWorker (req,res,next){
+        try {
+            const {id}=req.query
+           await Worker.destroy({where:{id:id}})
+            res.json('done')
+        } catch (error) {
+            next(ApiError.badRequest(error.message))
+        }
     }
 
 }

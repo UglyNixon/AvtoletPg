@@ -7,7 +7,7 @@ const Worker = sequelize.define('worker',
         name:{type:DataTypes.STRING,unique:false,allowNull:false},
         surname:{type:DataTypes.STRING,unique:false,allowNull:false},
         code:{type:DataTypes.INTEGER,unique:true,allowNull:false},
-        img:{type:DataTypes.STRING,defaultValue:''}
+        img:{type:DataTypes.STRING,defaultValue:'EmptyProfile.jpg'}
 
     },{
         timestamps: false

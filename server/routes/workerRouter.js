@@ -7,6 +7,7 @@ const checkRoleMiddleWare = require('../middleware/checkRoleMiddleWare');
 router.post('/',checkRoleMiddleWare("ADMIN"), workerController.create)
 router.get('/',workerController.getAll)
 router.get('/:id',workerController.getOne)
+router.delete('/delete',workerController.deleteWorker)
 
 
 

@@ -9,11 +9,12 @@ export const createWorkerPlace =async (title) =>{
     return data
 }
 
-export const fetchWorkerPlace =async () =>{
-    const {data} = await $host.get('api/workerPlace')
+export const fetchWorkerPlace =async (id) =>{
+    const {data} = await $host.get('api/workerPlace',{params:{id:id}})
      return data
 
 }
+
 
 export const createWorker =async (formData) =>{
     const {data} = await $authHost.post('api/worker',formData)
@@ -23,6 +24,11 @@ export const createWorker =async (formData) =>{
 
 export const fetchWorker =async () =>{
     const {data} = await $host.get('api/worker')
+     return data
+
+}
+export const fetchOneWorker =async (id) =>{
+    const {data} = await $host.get('api/worker/'+id)
      return data
 
 }
@@ -60,5 +66,9 @@ export const  forceBackupUseFile=async (formData)=>{
        }
 export const saveBackup = async (formData)=> {
     const {data} = await $authHost.post('api/backup/save',formData)
+    return data;
+}
+export const deleteWorker = async (id)=> {
+    const {data} = await $authHost.delete('api/worker/delete',{params:{id:id}})
     return data;
 }

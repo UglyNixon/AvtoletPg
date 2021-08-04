@@ -4,13 +4,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Dropdown, Form, Modal, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { Context } from '../..';
-
 import {  Stat, workerFilter } from '../../helpers/littleFunc';
+import { WORKER_ROUTE } from '../../utils/constant';
 
 
 const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
   console.log('перерендер')
-  
+  const history = useHistory()
   const {product,ruchki} =useContext(Context)
   const [date,setDate] = useState('Все') 
   date !=='Все'? ruchkiTemp=ruchkiTemp.filter(r=>r.date.includes(date)) :ruchkiTemp=ruchki.ruchki;
@@ -24,7 +24,7 @@ const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
   let total = Stat.made('totalValue',workerFilter(ruchkiTemp))
   const dateFilter =(date)=>{
    
-    console.log(ruchkiTemp)
+   
   
   }
  
@@ -94,7 +94,7 @@ const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
     product.workers.filter((w)=>w.workerPlaceId===2).map((w,i)=>
       <tr key={w.id}>
         <td>{i+2}</td>
-        <td>{`${w.surname} ${w.name}`}</td>
+        <td  style={{cursor:'pointer'}} onClick={()=>history.push(WORKER_ROUTE+`/`+w.id)}>{`${w.surname} ${w.name}`}</td>
         <td>{`${Stat.made('totalValue',workerFilter(ruchkiTemp,w.id))} / ${(Stat.made('totalValue',workerFilter(ruchkiTemp,w.id))/total*100).toFixed(2)}%`}</td>
         <td>{`${Stat.made('dolg',workerFilter(ruchkiTemp,w.id))} / ${Stat.count('dolg',workerFilter(ruchkiTemp,w.id))}`}</td>
         <td>{`${Stat.made('brak',workerFilter(ruchkiTemp,w.id))} / ${(Stat.made('brak',workerFilter(ruchkiTemp,w.id))/Stat.made('totalValue',workerFilter(ruchkiTemp,w.id))*100).toFixed(2)}%`}</td>
