@@ -9,15 +9,21 @@ const DeleteWorker = observer(({show,onHide}) => {
    const {product}=useContext(Context)
    const [workerTemp,setWorkerTemp]=useState([])
    const clickDelete=()=>{
-     deleteWorker(product.selectedWorker.id).then(()=>
-     {alert('Удален'); fetchWorker()
-     .then(data=>{console.log('сработано удаление');product.setWorkers(data);setWorkerTemp(data)})}
-     )
-     product.setSelectedWorker({surname:'Работник'})
+     const a= window.confirm(`Вы действительно хотите удалить ${product.selectedWorker.surname} ${product.selectedWorker.name}?`)
+   if (a){
+    deleteWorker(product.selectedWorker.id).then(()=>
+    {alert('Удален'); fetchWorker()
+    .then(data=>{console.log('сработано удаление');product.setWorkers(data);setWorkerTemp(data)})}
+    )
+    product.setSelectedWorker({surname:'Работник'})
+
+   }
+    
+    
    }
 const placeClick=(p)=>{
   product.setSelectedPlace(p)
-  setWorkerTemp(product.workers.filter(w=>w.workerPlaceId==p.id))
+  setWorkerTemp(product.workers.filter(w=>w.workerPlaceId===p.id))
   product.setSelectedWorker({surname:'Работник'})
 }
    useEffect(()=>{
@@ -79,7 +85,7 @@ const placeClick=(p)=>{
     
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="success" onClick={()=>clickDelete()}>Добавить</Button>
+        <Button variant="success" onClick={()=>clickDelete()}>Удалить</Button>
         <Button variant="warning" onClick={onHide}>Закрыть</Button>
       </Modal.Footer>
     </Modal>

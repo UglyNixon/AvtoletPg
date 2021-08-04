@@ -8,7 +8,11 @@ import { fetchWorker, fetchWorkerPlace } from '../http/ProductApi';
 
 
 const Personal = observer(() => {
+
   
+
+ 
+
     const {product} =useContext(Context)
     const [workers,setWorkers] =useState([{}])
     useEffect(()=>{
