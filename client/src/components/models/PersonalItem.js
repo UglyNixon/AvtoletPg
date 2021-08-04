@@ -12,7 +12,7 @@ const PersonalItem = ({worker}) => {
         onClick={()=>history.push(WORKER_ROUTE+'/'+worker.id)}
         >
              <Card.Body>
-              <Card.Title>{`${worker.surname} ${worker.name} 2`}</Card.Title>
+              <Card.Title>{`${worker.surname} ${worker.name} `}</Card.Title>
               <hr/>
               <Card.Text>
                 {`Код: ${worker.code}`}
