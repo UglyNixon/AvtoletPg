@@ -10,9 +10,11 @@ import { fetchWorker } from '../../http/ProductApi';
 import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
 import { Fragment } from 'react';
 import RuchkaStats from '../models/RuchkaStats';
+import RuchkaEdit from '../models/RuchkaEdit';
 
 const RuchkaTable = observer(() => {
    const [modVis,setModVis]= useState(false)
+   const [editVis,setEditVis]= useState(false)
    const [statVis,setStatVis]= useState(false)
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
@@ -35,7 +37,7 @@ const RuchkaTable = observer(() => {
       .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
       console.log(product.workers)
     }
-   
+
   
    /*      
      костыли для обхода useState()   
@@ -105,10 +107,12 @@ const RuchkaTable = observer(() => {
        <Fragment >
          <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
          <RuchkaStats show={statVis} ruchkiTemp={ruchki.ruchki} onHide={()=>setStatVis(false)}/>
+         <RuchkaEdit show={editVis} workers={product.workers} ruchki={ruchki.ruchki} onHide={()=>setEditVis(false)}/>
 
 <Container className='mb-3 '>
  <Button className ='mr-3' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>
  <Button className ='mr-3' variant="outline-success" onClick={()=>setModVis(true)}>Создать запись</Button>
+ <Button className ='mr-3' variant="outline-success" onClick={()=>setEditVis(true)}>Редактировать запись</Button>
 </Container> 
         <Table striped bordered hover variant="dark">
   <thead>
@@ -202,7 +206,13 @@ const RuchkaTable = observer(() => {
     </tr>
   </thead>
   <tbody>
-    {ruchki.ruchki.map(item=><RuchkaTableTr key={item.series} ruchka={item} workers={product.workers}/>)}
+    {ruchki.ruchki.map(item=>
+    <RuchkaTableTr
+     key={item.series}
+      ruchka={item}
+       workers={product.workers}
+    />
+    )}
   </tbody>
 </Table>
 </Fragment>
