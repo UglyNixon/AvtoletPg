@@ -11,6 +11,7 @@ const Check= {
            if (n==0) return true
            // надо бы тут покапать еще
            if (n==1) return /[1,2]/.test(value)
+           if (n==2&&/^[1]/.test(value)) return /[1][8,9]/.test(value)
            return value.match(/\d+/)[0].length==n
        }
 }
