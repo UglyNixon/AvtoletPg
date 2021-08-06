@@ -3,8 +3,6 @@ import { Button, Container, Dropdown, NavItem, Spinner, Table } from 'react-boot
 import { Context } from '../..';
 import CreateRuchka from '../models/CreateRuchka';
 import styles from '../../styles/table.module.css';
-
-import RuchkaTableTr from './RuchkaTableTr';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
@@ -24,14 +22,16 @@ const RuchkaTable = observer(() => {
    const [brak,setBrak]=useState('Все')
    const [sort,setSort]=useState('Убыв')
    const [date,setDate]=useState('Все')
+   const [editRuchka,setEditRuchka]=useState({series:''})
+   const openEdit=(ruchka={series:''})=>{
+     setEditRuchka(Object.assign({}, ruchka))
+     setEditVis(true)
+   }
    const sortAll=(value,data=ruchki.ruchki)=>{
     ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),data));
     /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
    }
    const sortDB=(d=dolg,b=brak,s=status,da=date,name=workerName)=>{
-      console.log(d,b,s,da,name)
-      console.log(product.workers)
-      console.log(product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id'])
       const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
       filterRuchka(d,b,s,da,workerId)
       .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
@@ -75,8 +75,9 @@ const RuchkaTable = observer(() => {
      ()=>
      fetchWorker()
      .then(data=>{
-    data.unshift(new Proxy ({surname:'Все',id:"Все"},{}))
-    product.setWorkers(data)
+    data.unshift(new Proxy ({surname:'Все',id:"Все",workerPlaceId:2},{}))
+   
+    product.setWorkers(data.filter(w=>w.workerPlaceId===2))
     })
     .then(()=>fetchRuchka())
     .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
@@ -106,8 +107,8 @@ const RuchkaTable = observer(() => {
   
        <Fragment >
          <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
-         <RuchkaStats show={statVis} ruchkiTemp={ruchki.ruchki} onHide={()=>setStatVis(false)}/>
-         <RuchkaEdit show={editVis} workers={product.workers} ruchki={ruchki.ruchki} onHide={()=>setEditVis(false)}/>
+         <RuchkaStats show={statVis} ruchkiTemp={ruchki.ruchki.slice(0)} onHide={()=>setStatVis(false)}/>
+         <RuchkaEdit show={editVis} workers={product.workers.slice(1)} truchka={editRuchka} onHide={()=>{setEditRuchka({series:''});setEditVis(false)}}/>
 
 <Container className='mb-3 '>
  <Button className ='mr-3' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>
@@ -207,11 +208,15 @@ const RuchkaTable = observer(() => {
   </thead>
   <tbody>
     {ruchki.ruchki.map(item=>
-    <RuchkaTableTr
-     key={item.series}
-      ruchka={item}
-       workers={product.workers}
-    />
+    <tr style={{cursor:'pointer'}} onClick={()=>openEdit(item)} key={item.series}>
+    <td className={styles.th}>{item.series}</td>
+    <td className={styles.th}>{product.workers.filter(w=>w.id===item.workerId)[0].surname}</td>
+    <td className={styles.th}>{item.totalValue}</td>
+    <td className={styles.th}>{item.dolg}</td>
+    <td className={styles.th}>{item.status?'Сдано':'В работе'}</td>
+    <td className={styles.th}>{item.brak}</td> 
+    <td className={styles.th}>{item.date}</td>
+</tr>
     )}
   </tbody>
 </Table>

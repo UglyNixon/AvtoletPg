@@ -44,20 +44,20 @@ class ruchkaController {
     async filter(req,res,next) {
                 try {
                    let {dolg,brak,status,date,workerId}=req.query;
-                  console.log(workerId)
+                  
                    let workerSearch = workerId == 'Все'? {[Op.ne]:0}:{[Op.eq]:workerId} 
                    let dolgSearch = dolg =='Все' ? {[Op.ne]:-1} : dolg == "Есть" ? {[Op.gt]:0} :{[Op.eq]:0} 
                    let brakSearch = brak == 'Все' ? {[Op.ne]:-1} : /99/.test(brak)? {[Op.between]:[1,99]} :{[Op.gt]:99}
                    let statusSearch =status =="Все" ? {[Op.or]:[true,false]} :/Сдано/.test(status) ? {[Op.eq]:true} :{[Op.not]:true}
                    /*с даной кривовато вышло .....так норм??*/
-                    let dateSearch = date=='Все'? {[Op.ne]:'Какая разница что'}
+                   let dateSearch = date=='Все'? {[Op.ne]:'Какая разница что'}
                     :/2020/.test(date) ? 
                     {[Op.like]:'__/20'}
                     // {[Op.or]:['01/20','02/20','03/20','04/20','05/20','06/20','07/20','08/20','09/20','10/20','11/20','12/20',]}:
                     :
                     {[Op.like]:'__/21'}
                     // {[Op.or]:['01/21','02/21','03/21','04/21','05/21','06/21','07/21','08/21','09/21','10/21','11/21','12/21']}
-               console.log(dolg,brak,status,date,workerId)
+              
               
                     const ruchka = await Ruchka.findAll ({
 

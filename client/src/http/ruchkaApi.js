@@ -18,5 +18,9 @@ export const createRuchka =async (formData) =>{
         const {data} =await $host.get('api/ruchka/f',{params:{dolg,brak,status,date,workerId}})
         return data;  
     }
+    export const fetchOneRuchka= async(id)=>{
+        const {data} =await $host.get('api/ruchka/'+id)
+        return data;  
+    }
 
    

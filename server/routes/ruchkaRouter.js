@@ -6,6 +6,7 @@ const checkRoleMiddleWare = require('../middleware/checkRoleMiddleWare');
 router.post('/',checkRoleMiddleWare("ADMIN"), ruchkaController.create)
 router.get('/',ruchkaController.getAll)
 router.get('/f',ruchkaController.filter)
+router.get('/:id',ruchkaController.getOne)
 
 
 

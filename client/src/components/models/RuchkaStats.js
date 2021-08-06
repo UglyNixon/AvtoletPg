@@ -9,7 +9,7 @@ import { WORKER_ROUTE } from '../../utils/constant';
 
 
 const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
-  console.log('перерендер')
+
   const history = useHistory()
   const {product,ruchki} =useContext(Context)
   const [date,setDate] = useState('Все') 

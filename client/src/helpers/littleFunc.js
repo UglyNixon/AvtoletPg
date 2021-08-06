@@ -6,14 +6,20 @@ const Check= {
     },
     year(value) {
         return /^\d\d$/.test(value)&&+value>=19&&+value<=30
-       },
-       series(value,n){
+    },
+    inputNUmbers(value,n){
+           
            if (n==0) return true
            // надо бы тут покапать еще
            if (n==1) return /[1,2]/.test(value)
            if (n==2&&/^[1]/.test(value)) return /[1][8,9]/.test(value)
            return value.match(/\d+/)[0].length==n
-       }
+    },
+    series (value){
+        return /\d{6}/.test(value)
+    },
+    
+
 }
 const workerFilter =(ruchki,name=0)=>{
     
