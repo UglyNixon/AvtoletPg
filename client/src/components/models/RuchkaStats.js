@@ -8,24 +8,19 @@ import {  Stat, workerFilter } from '../../helpers/littleFunc';
 import { WORKER_ROUTE } from '../../utils/constant';
 
 
-const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
-
+const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
+  let ruchkiTemp=cruchki.slice(0)
   const history = useHistory()
-  const {product,ruchki} =useContext(Context)
   const [date,setDate] = useState('Все') 
-  date !=='Все'? ruchkiTemp=ruchkiTemp.filter(r=>r.date.includes(date)) :ruchkiTemp=ruchki.ruchki;
+  date !=='Все'? ruchkiTemp=ruchkiTemp.filter(r=>r.date.includes(date)) :ruchkiTemp=cruchki;
   let dateSet=new Set()
-  ruchki.ruchki.forEach(r => {
+  cruchki.forEach(r => {
   dateSet.add(`${r.date.slice(r.date.match(/\//).index+1,)}`)
   });
   dateSet=Array.from(dateSet.add('Все'))
-
-
   let total = Stat.made('totalValue',workerFilter(ruchkiTemp))
   const dateFilter =(date)=>{
    
-   
-  
   }
  
     return (
@@ -91,7 +86,7 @@ const RuchkaStats = observer(({show,onHide,ruchkiTemp}) => {
       <td>{`${Stat.made('brak',workerFilter(ruchkiTemp))} / ${(Stat.made('brak',workerFilter(ruchkiTemp))/total*100).toFixed(2)}%`}</td>
     </tr>
   {
-    product.workers.filter((w)=>w.workerPlaceId===2).map((w,i)=>
+   cworkers.filter((w)=>w.workerPlaceId===2).map((w,i)=>
       <tr key={w.id}>
         <td>{i+2}</td>
         <td  style={{cursor:'pointer'}} onClick={()=>history.push(WORKER_ROUTE+`/`+w.id)}>{`${w.surname} ${w.name}`}</td>

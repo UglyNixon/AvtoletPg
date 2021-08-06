@@ -143,8 +143,8 @@ formVis&& <Container className='mt-2 p-0'>
  }
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={()=>makeChange()}>Внести изменения</Button>
-        <Button onClick={()=>{setSerSearch('');setError({});setFormVis(false);console.log(newSeries);onHide();}}>Close</Button>
+        <Button variant="success"  onClick={()=>makeChange()}>Внести изменения</Button>
+        <Button variant="warning"  onClick={()=>{setSerSearch('');setError({});setFormVis(false);console.log(newSeries);onHide();}}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
   );

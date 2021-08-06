@@ -23,6 +23,36 @@ const RuchkaTable = observer(() => {
    const [sort,setSort]=useState('Убыв')
    const [date,setDate]=useState('Все')
    const [editRuchka,setEditRuchka]=useState({series:''})
+   const [cworkers,setCworkers]=useState([])
+   const [cruchki,setCruchki]=useState([])
+   useEffect (
+    ()=>
+    fetchWorker()
+    .then(data=>{
+      setCworkers(data);
+   data.unshift(new Proxy ({surname:'Все',id:"Все",workerPlaceId:2},{}))
+  
+   product.setWorkers(data.filter(w=>w.workerPlaceId===2))
+   })
+   .then(()=>fetchRuchka())
+   .then(data=>{
+    setCruchki(data)
+     ruchki.setRuchki(data.sort((a,b)=>b.series-a.series))
+    })
+   .then(()=>{
+     let set=new Set()
+     ruchki.ruchki.forEach(item =>{
+     set.add(`20${item.date.slice(item.date.match(/\//).index+1,)}`)
+     })
+    set=[...set]
+     set.unshift('Все')
+     ruchki.setDates(set)
+   })
+   .finally(()=>setLoading(false))
+   ,[])
+
+
+
    const openEdit=(ruchka={series:''})=>{
      setEditRuchka(Object.assign({}, ruchka))
      setEditVis(true)
@@ -35,10 +65,8 @@ const RuchkaTable = observer(() => {
       const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
       filterRuchka(d,b,s,da,workerId)
       .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
-      console.log(product.workers)
+   
     }
-
-  
    /*      
      костыли для обхода useState()   
      подумать как запихнуть в useEffect(()=>{sortDB()},[brak,dolg ...])     
@@ -71,27 +99,7 @@ const RuchkaTable = observer(() => {
     }
     
 
-   useEffect (
-     ()=>
-     fetchWorker()
-     .then(data=>{
-    data.unshift(new Proxy ({surname:'Все',id:"Все",workerPlaceId:2},{}))
-   
-    product.setWorkers(data.filter(w=>w.workerPlaceId===2))
-    })
-    .then(()=>fetchRuchka())
-    .then(data=>ruchki.setRuchki(data.sort((a,b)=>b.series-a.series)))
-    .then(()=>{
-      let set=new Set()
-      ruchki.ruchki.forEach(item =>{
-      set.add(`20${item.date.slice(item.date.match(/\//).index+1,)}`)
-      })
-     set=[...set]
-      set.unshift('Все')
-      ruchki.setDates(set)
-    })
-    .finally(()=>setLoading(false))
-     ,[])
+ 
    
      
        
@@ -107,7 +115,7 @@ const RuchkaTable = observer(() => {
   
        <Fragment >
          <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
-         <RuchkaStats show={statVis} ruchkiTemp={ruchki.ruchki.slice(0)} onHide={()=>setStatVis(false)}/>
+         <RuchkaStats show={statVis} cruchki={cruchki.slice(0)} cworkers={cworkers.slice(1)} onHide={()=>setStatVis(false)}/>
          <RuchkaEdit show={editVis} workers={product.workers.slice(1)} truchka={editRuchka} onHide={()=>{setEditRuchka({series:''});setEditVis(false)}}/>
 
 <Container className='mb-3 '>
