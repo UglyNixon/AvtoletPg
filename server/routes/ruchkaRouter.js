@@ -7,6 +7,7 @@ router.post('/',checkRoleMiddleWare("ADMIN"), ruchkaController.create)
 router.get('/',ruchkaController.getAll)
 router.get('/f',ruchkaController.filter)
 router.get('/:id',ruchkaController.getOne)
+router.patch('/',ruchkaController.edit)
 
 
 

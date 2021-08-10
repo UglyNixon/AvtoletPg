@@ -11,6 +11,8 @@ import RuchkaStats from '../models/RuchkaStats';
 import RuchkaEdit from '../models/RuchkaEdit';
 
 const RuchkaTable = observer(() => {
+
+   const [reset,setReset]=useState(0)
    const [modVis,setModVis]= useState(false)
    const [editVis,setEditVis]= useState(false)
    const [statVis,setStatVis]= useState(false)
@@ -25,13 +27,20 @@ const RuchkaTable = observer(() => {
    const [editRuchka,setEditRuchka]=useState({series:''})
    const [cworkers,setCworkers]=useState([])
    const [cruchki,setCruchki]=useState([])
+   const resetF=()=>{
+    setWorkerName('Все')
+    setDolg('Все')
+    setStatus('Все')
+    setSort('Убыв')
+    setDate('Все')
+    setReset(reset+1)
+   }
    useEffect (
     ()=>
     fetchWorker()
     .then(data=>{
       setCworkers(data);
    data.unshift(new Proxy ({surname:'Все',id:"Все",workerPlaceId:2},{}))
-  
    product.setWorkers(data.filter(w=>w.workerPlaceId===2))
    })
    .then(()=>fetchRuchka())
@@ -49,7 +58,7 @@ const RuchkaTable = observer(() => {
      ruchki.setDates(set)
    })
    .finally(()=>setLoading(false))
-   ,[])
+   ,[reset])
 
 
 
@@ -114,14 +123,16 @@ const RuchkaTable = observer(() => {
     return (
   
        <Fragment >
+         <Container style={{flexDirection:'column'}}>
          <CreateRuchka show={modVis} onHide={()=>setModVis(false)} workers={product.workers}/>
          <RuchkaStats show={statVis} cruchki={cruchki.slice(0)} cworkers={cworkers.slice(1)} onHide={()=>setStatVis(false)}/>
          <RuchkaEdit show={editVis} workers={product.workers.slice(1)} truchka={editRuchka} onHide={()=>{setEditRuchka({series:''});setEditVis(false)}}/>
 
-<Container className='mb-3 '>
- <Button className ='mr-3' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>
- <Button className ='mr-3' variant="outline-success" onClick={()=>setModVis(true)}>Создать запись</Button>
- <Button className ='mr-3' variant="outline-success" onClick={()=>setEditVis(true)}>Редактировать запись</Button>
+<Container className='mb-3 p-0' >
+ <Button className ='mr-3 mt-2' variant="outline-info" onClick={()=>setStatVis(true)}>Статистика</Button>
+ <Button className ='mr-3 mt-2' variant="outline-success" onClick={()=>setModVis(true)}>Создать запись</Button>
+ <Button className ='mr-3 mt-2' variant="outline-success" onClick={()=>setEditVis(true)}>Редактировать запись</Button>
+ <Button className ='mr-3 mt-2' variant="outline-success" onClick={()=>resetF()}>Обновить/сбросить</Button>
 </Container> 
         <Table striped bordered hover variant="dark">
   <thead>
@@ -228,6 +239,7 @@ const RuchkaTable = observer(() => {
     )}
   </tbody>
 </Table>
+</Container>
 </Fragment>
 
     );}

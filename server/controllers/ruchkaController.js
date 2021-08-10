@@ -2,6 +2,7 @@ const {Ruchka, Defec} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const { Op } = require('sequelize')
 const fs = require('fs');
+const { Console } = require('console');
 
 
 class ruchkaController {
@@ -76,6 +77,27 @@ class ruchkaController {
                     next(ApiError.badRequest(error.message)) 
                 }
 
+    }
+    async edit (req,res,next) {
+
+        try {
+            let {dolg,brak,date,workerId,newSeries,totalValue,series}=req.body;
+            console.log(series,newSeries,totalValue,dolg,brak,date)
+            const newData = await Ruchka.update(
+                {series:+newSeries,
+                    dolg:+dolg,
+                    brak:+brak,
+                    date:date,
+                    workerId:+workerId,
+                    totalValue:+totalValue
+                }
+                ,{where :{series:series}})
+            return res.json(newSeries)
+        } catch (error) {
+            next(ApiError.badRequest(error.message)) 
+        }
+
+      
     }
   
 

@@ -1,17 +1,17 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Container, Dropdown, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Dropdown, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
 import { Context } from '../..';
 
 import { Check } from '../../helpers/littleFunc';
-import { fetchOneRuchka } from '../../http/ruchkaApi';
-
-
+import { editRuchka, fetchOneRuchka, fetchRuchka } from '../../http/ruchkaApi';
+// Сделать запрет на выбор несуществующей серии!!!!!!!!!!!!!!!!!!!!!!!! вроде ок
 const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
   const{ruchki,product} =useContext(Context)
   const [error,setError] = useState({})
   const [serSearch,setSerSearch]=useState(truchka.series)
   const [formVis,setFormVis]=useState(false)
+  const [read,setRead]=useState(false)
   const [newSeries,setNewSeries]=useState(ruchki.ruchka.series)
   const [newBrak,setNewBrak]=useState(ruchki.ruchka.brak)
   const [newDolg,setNewDolg]=useState(ruchki.ruchka.dolg)
@@ -29,23 +29,44 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
     textDecorationColor: 'red',
   }
   const makeChange=()=>{
-    onHide()
+    
+   const formData= new FormData()
+  formData.append('newSeries',+newSeries)    
+  formData.append('series',ruchki.ruchka.series)    
+  formData.append('brak',+newBrak)    
+  formData.append('dolg',+newDolg)    
+  formData.append('totalValue',+newTotalValue)    
+  formData.append('date',newDate)  
+  formData.append('workerId',product.selectedWorker.id)  
+ 
+  editRuchka(formData).then(data=>{alert('Данные внесены');setFormVis(false); setRead(false);setSerSearch(data)})
+  .then(()=>fetchRuchka() .then(data=>{
+    ruchki.setRuchki(data.sort((a,b)=>b.series-a.series))
+   }))
+  
+  
+
+    
+   
+    
   }
   const inputChange = (value)=>{
    if (value.length===0) {truchka.series=''}
-   if(! Check.inputNUmbers(value,value.length)) return
+   if(! Check.inputNUmbers(value,value.length)) {return}
      setError({})
      setSerSearch(value)
   
   }
   const openEditForm=(value=serSearch||truchka.series)=>{
-     if(!Check.series(value,value.length)) {setError(errorStyle)
-  }else {
+    
+     if(!Check.series(value,value.length)) {setError(errorStyle); return}
+     if (ruchki.ruchki.filter(r=>r.series==value).length==0) {alert('Такой серии не существует(');setSerSearch('');return}
     setError({})
+    setRead(true)
     fetchOneRuchka(value).then(data=>{ruchki.setRuchka(data);product.setSelectedWorker(workers.filter(w=>w.id===ruchki.ruchka.workerId)[0]);setFormVis(true)})
     
   } 
-}
+
 
     return ( 
       <Modal
@@ -54,7 +75,7 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
         Редактировать запись
         </Modal.Title>
@@ -67,6 +88,7 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
            value={serSearch||truchka.series}
             placeholder='Введите серию'
             maxLength={6}
+            readOnly={read}
              onChange={e=>inputChange(e.target.value)}
              aria-describedby="seriesIII"
              style={error}
@@ -135,7 +157,6 @@ formVis&& <Container className='mt-2 p-0'>
       <Form.Control type="text" placeholder="MM/YY"  value={newDate} onChange={(e)=>setNewDate(e.target.value)} />
     </Col>
   </Form.Group>
-  
  </Container>
 
 
@@ -143,8 +164,8 @@ formVis&& <Container className='mt-2 p-0'>
  }
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="success"  onClick={()=>makeChange()}>Внести изменения</Button>
-        <Button variant="warning"  onClick={()=>{setSerSearch('');setError({});setFormVis(false);console.log(newSeries);onHide();}}>Закрыть</Button>
+      {formVis &&  <Button variant="success"  onClick={()=>makeChange()}>Внести изменения</Button> }
+        <Button variant="warning"  onClick={()=>{setSerSearch('');setError({});setFormVis(false);onHide();setRead(false)}}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
   );

@@ -1,7 +1,7 @@
 import { $authHost,$host } from "./index"
 
 
-export const createRuchka =async (formData) =>{
+    export const createRuchka =async (formData) =>{
     const {data} = await $authHost.post('api/ruchka',formData)
     return data
     }
@@ -23,4 +23,7 @@ export const createRuchka =async (formData) =>{
         return data;  
     }
 
-   
+   export const editRuchka=async(formData)=>{
+       const {data} = await $host.patch('api/ruchka',formData)
+       return data
+   }
