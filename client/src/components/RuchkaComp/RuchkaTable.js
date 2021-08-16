@@ -12,28 +12,24 @@ import RuchkaEdit from '../models/RuchkaEdit';
 
 const RuchkaTable = observer(() => {
 
-   const [reset,setReset]=useState(0)
+   
    const [modVis,setModVis]= useState(false)
    const [editVis,setEditVis]= useState(false)
    const [statVis,setStatVis]= useState(false)
    const {ruchki,product}=useContext(Context)
    const [loading,setLoading]=useState(true)
-   const [workerName,setWorkerName]=useState('Все')
-   const [dolg,setDolg]=useState('Все')
-   const [status,setStatus]=useState('Все')
-   const [brak,setBrak]=useState('Все')
-   const [sort,setSort]=useState('Убыв')
-   const [date,setDate]=useState('Все')
+   const [filter,setFilter] =useState({workerName:'Все',dolg:'Все',status:'Все',brak:'Все',sort:'Убыв',date:'Все'})
+ 
    const [editRuchka,setEditRuchka]=useState({series:''})
    const [cworkers,setCworkers]=useState([])
    const [cruchki,setCruchki]=useState([])
    const resetF=()=>{
-    setWorkerName('Все')
-    setDolg('Все')
-    setStatus('Все')
-    setSort('Убыв')
-    setDate('Все')
-    setReset(reset+1)
+   setFilter({...filter,workerName:'Все'})
+   setFilter({...filter,dolg:'Все'})
+   setFilter({...filter,status:'Все'})
+   setFilter({...filter,sort:'Убыв'})
+   setFilter({...filter,brak:'Все'})
+   setFilter({...filter,date:'Все'})
    }
    useEffect (
     ()=>
@@ -58,7 +54,7 @@ const RuchkaTable = observer(() => {
      ruchki.setDates(set)
    })
    .finally(()=>setLoading(false))
-   ,[reset])
+   ,[])
 
 
 
@@ -68,12 +64,12 @@ const RuchkaTable = observer(() => {
    }
    const sortAll=(value,data=ruchki.ruchki)=>{
     ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(value),data));
-    /Убыв/.test(value) ? setSort('Убыв') :setSort('Возр')
+    /Убыв/.test(value) ? setFilter({...filter,sort:'Убыв'}) :setFilter({...filter,sotr:'Возр'})
    }
-   const sortDB=(d=dolg,b=brak,s=status,da=date,name=workerName)=>{
+   const sortDB=(d=filter.dolg,b=filter.brak,s=filter.status,da=filter.date,name=filter.workerName)=>{
       const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
       filterRuchka(d,b,s,da,workerId)
-      .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(sort),data)))
+      .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(filter.sort),data)))
    
     }
    /*      
@@ -87,23 +83,23 @@ const RuchkaTable = observer(() => {
    должно работать , переписать когда не будет лень
   */
    const dolgSort =(value)=>{
-    setDolg(value);
+   setFilter({...filter,dolg:value})
     sortDB(value,undefined,undefined,undefined,undefined)
    }
    const brakSort =(value)=>{
-    setBrak(value);
+    setFilter({...filter,brak:value})
     sortDB(undefined,value,undefined,undefined,undefined)
    }
    const statusSort =(value)=>{
-     setStatus(value);
+    setFilter({...filter,status:value})
      sortDB(undefined,undefined,value,undefined,undefined)
     }
   const dateSort =(value)=>{
-      setDate(value);
+    setFilter({...filter,date:value})
       sortDB(undefined,undefined,undefined,value,undefined)
     }
   const workSort =(value)=>{
-     setWorkerName(value);
+    setFilter({...filter,workerName:value})
      sortDB(undefined,undefined,undefined,undefined,value)
     }
     
@@ -150,7 +146,7 @@ const RuchkaTable = observer(() => {
     <tr>
       <th className={styles.th}> 
       <Dropdown >
-                <Dropdown.Toggle style={{width:120}} >{sort}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:120}} >{filter.sort}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={(e)=>sortAll(e.target.innerHTML)}>Убыв</Dropdown.Item>
                               <Dropdown.Item  onClick={(e)=>sortAll(e.target.innerHTML)}>Возр</Dropdown.Item>
@@ -160,7 +156,7 @@ const RuchkaTable = observer(() => {
     </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:126}} >{workerName||product.workers[0].id}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:126}} >{filter.workerName||product.workers[0].id}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
                       product.workers.map(wor=>
@@ -174,7 +170,7 @@ const RuchkaTable = observer(() => {
       <th className={styles.th}  style={{width:20}}>шт.</th>
       <th className={styles.th}>
               <Dropdown >
-                <Dropdown.Toggle style={{width:60}} >{dolg}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:60}} >{filter.dolg}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>dolgSort('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>dolgSort('Есть')}>Есть</Dropdown.Item>
@@ -184,7 +180,7 @@ const RuchkaTable = observer(() => {
             </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:80}} >{status}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{filter.status}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>statusSort('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>statusSort('Сдано')}>Сдано</Dropdown.Item>
@@ -197,7 +193,7 @@ const RuchkaTable = observer(() => {
       <th className={styles.th}>
 
             <Dropdown > 
-                <Dropdown.Toggle style={{width:80}} >{brak}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{filter.brak}</Dropdown.Toggle>
                 <Dropdown.Menu>
                               <Dropdown.Item  onClick={()=>brakSort('Все')}>Все</Dropdown.Item>
                               <Dropdown.Item  onClick={()=>brakSort('0...99')}>0...99</Dropdown.Item>
@@ -210,7 +206,7 @@ const RuchkaTable = observer(() => {
       </th>
       <th className={styles.th}>
       <Dropdown >
-                <Dropdown.Toggle style={{width:80}} >{date||'Все'}</Dropdown.Toggle>
+                <Dropdown.Toggle style={{width:80}} >{filter.date||'Все'}</Dropdown.Toggle>
                 <Dropdown.Menu>
                       {
                     
