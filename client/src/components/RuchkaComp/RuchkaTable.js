@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react';
-import { Button, Container, Dropdown, NavItem, Spinner, Table } from 'react-bootstrap';
+import { Button, Container, Dropdown, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
 import CreateRuchka from '../models/CreateRuchka';
 import styles from '../../styles/table.module.css';
@@ -67,7 +67,7 @@ const RuchkaTable = observer(() => {
     /Убыв/.test(value) ? setFilter({...filter,sort:'Убыв'}) :setFilter({...filter,sotr:'Возр'})
    }
    const sortDB=(d=filter.dolg,b=filter.brak,s=filter.status,da=filter.date,name=filter.workerName)=>{
-      const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()==name.toLowerCase())[0]['id']
+      const workerId= product.workers.filter((wor)=>wor.surname.toLowerCase()===name.toLowerCase())[0]['id']
       filterRuchka(d,b,s,da,workerId)
       .then((data)=>ruchki.setRuchki(ruchki.sortAll(/Убыв/.test(filter.sort),data)))
    
