@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 
 const ChipPage = () => {
+   
     return (
         <div>
-            Chip Page
+          кодовые полоски
         </div>
     );
 };

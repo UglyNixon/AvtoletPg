@@ -30,6 +30,16 @@ const Chip = sequelize.define('chip',{
     series:{type:DataTypes.INTEGER,allowNull:false},
     totalValue:{type:DataTypes.INTEGER,unique:false,allowNull:false},
     type:{type:DataTypes.STRING,allowNull:false},
+    brak:{type:DataTypes.INTEGER,defaultValue:0}
+},{
+    timestamps: false,
+  
+})
+const Device = sequelize.define('device',{
+    id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+    series:{type:DataTypes.INTEGER,allowNull:false},
+    totalValue:{type:DataTypes.INTEGER,unique:false,allowNull:false},
+    type:{type:DataTypes.STRING,allowNull:false},
     typeCode:{type:DataTypes.STRING,allowNull:false},
     brak:{type:DataTypes.INTEGER,defaultValue:0}
 },{
@@ -92,6 +102,8 @@ Defec.belongsTo(Ruchka)
 
 Chip.hasMany(Defec,{as:'defec'});
 Defec.belongsTo(Chip)
+Device.hasMany(Defec,{as:'defec'});
+Defec.belongsTo(Device)
 
 WorkerPlace.hasMany(Worker);
 Worker.belongsTo(WorkerPlace);
@@ -107,5 +119,6 @@ module.exports= {
     Product,
     WorkerPlace,
     BackupTable,
-    Chip
+    Chip,
+    Device
 }

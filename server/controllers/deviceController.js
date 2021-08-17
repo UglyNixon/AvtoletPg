@@ -1,17 +1,17 @@
-const {Chip, Defec} = require('../models/models');
+const { Defec} = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 
 
 
 
-class chipController {
+class deviceController {
     async create (req,res,next){
        
     }
  
     async getAll(req,res) {
-       res.json({series:21222})
+            res.json({series:123412431})
     }
     async getOne(req,res) {
    
@@ -21,4 +21,4 @@ class chipController {
 
 }
 
-module.exports=new chipController()
+module.exports=new deviceController()

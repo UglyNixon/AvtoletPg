@@ -8,6 +8,7 @@ const productRouter = require('./productRouter');
  const workerPlaceRouter = require('./workerPlaceRouter');
  const backupRouter = require('./backupRouter');
  const chipRouter = require('./chipRouter');
+ const deviceRouter = require('./deviceRouter');
 
 
 router.use('/worker',workerRouter)
@@ -18,6 +19,7 @@ router.use('/product',productRouter)
 router.use('/workerPlace',workerPlaceRouter)
 router.use('/backup',backupRouter)
 router.use('/chip',chipRouter)
+router.use('/device',deviceRouter)
 
 
 
