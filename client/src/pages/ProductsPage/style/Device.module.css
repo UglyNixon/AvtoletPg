@@ -1,4 +1,4 @@
-.ds {
+.df {
   display: flex;
 }
 .box {
@@ -19,32 +19,44 @@
 .accordion {
   font-size: 17px;
   margin: 0 20px;
-  width: 90%;
+  width: 80%;
   justify-content: center;
 }
 
 .accordion__button {
   border: 0;
+  border-radius: 10px;
   margin: 10px 0;
   padding: 20px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-size: inherit;
+  background-color: rgba(247 245 245, 0.77);
+}
+.accordion__button:hover {
+  background-color: rgba(215 ,210 ,210,0.7);
+  
 }
 
 .span {
   height: 30px;
   width: 30px;
   border-radius: 50%;
+  border: 1px solid rgb(228, 223, 223);
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
-  background: rgb(0, 0, 0);
+  background: rgba(223, 163, 163, 0.5);
   font-size: 15px;
   margin-top: -25px;
+  cursor: pointer;
+}
+.span:hover {
+  background: rgba(223, 163, 163, 1);
+  border: 0;
 }
 .fa_plus::before {
   content: "\27F1";

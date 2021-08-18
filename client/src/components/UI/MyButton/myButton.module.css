@@ -14,8 +14,8 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 .button:active {
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
 
@@ -31,11 +31,12 @@
 }
 
 .button.statis {
-    background: #2196F3;
+    background: #1e87dd;
+  }
+
+  .button:hover.statis {
+    background: #67b6f7;
   }
   .button:active.statis {
-    background: #0d8aee;
-  }
-  .button:hover.statis {
-    background: #39a1f4;
+    background: #116cb6;
   }

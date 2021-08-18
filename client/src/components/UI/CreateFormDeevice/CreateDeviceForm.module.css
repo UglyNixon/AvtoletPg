@@ -1,0 +1,11 @@
+.df {
+  display: flex;
+}
+
+.cont {
+  min-width: 500px;
+}
+
+.jc {
+  justify-content: space-between;
+}

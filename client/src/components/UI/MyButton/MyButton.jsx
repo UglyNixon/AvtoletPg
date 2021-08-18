@@ -5,7 +5,7 @@ const MyButton = ({children,...props}) => {
     const type = props.type
     return (
         <div>
-<button style={props.style} className={[cl.button,cl[type]].join(' ')}>{children}</button>
+<button {...props} style={props.style} className={[cl.button,cl[type]].join(' ')}>{children}</button>
         </div>
         
     );
