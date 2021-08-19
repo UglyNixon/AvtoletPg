@@ -2,7 +2,7 @@ import { $authHost,$host } from "./index"
 
 
     export const createDevice =async (formData) =>{
-    const {data} = await $authHost.post('api/chip',formData)
+    const {data} = await $authHost.post('api/device',formData)
     return data
     }
 
@@ -18,7 +18,7 @@ import { $authHost,$host } from "./index"
 
   
     export const fetchOneDevice= async(id)=>{
-        const {data} =await $host.get('api/chip/'+id)
+        const {data} =await $host.get('api/device/'+id)
         return data;  
     }
 

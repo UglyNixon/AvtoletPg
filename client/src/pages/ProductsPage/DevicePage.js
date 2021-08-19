@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import DeviceTable from '../../components/DeviceComp/DeviceTable';
 import MyModal from '../../components/models/NotBtModals/MyModal';
 import CreateDeviceForm from '../../components/UI/CreateFormDeevice/CreateDeviceForm';
+import MyLoader from '../../components/UI/Loader/MyLoader';
 import MyButton from '../../components/UI/MyButton/MyButton';
 import { useFetching } from '../../hooks/useFetching';
 import {fetchDevices} from '../../http/deviceApi'
@@ -15,7 +17,7 @@ const DevicePage = () => {
     const [fetchDevice,isChipFetching,chipError] = useFetching(async(limit,page)=>{
          const response = await fetchDevices(limit,page)
          setDevice(response)
-  
+         console.log(response)
         })
       
 
@@ -23,7 +25,7 @@ const DevicePage = () => {
         if (!activeStatus) setActiveStatus('active')
         if (activeStatus) setActiveStatus('')
     }
- useEffect(() => {
+    useEffect(() => {
            fetchDevice(limit,page)
     }, [])
     return (
@@ -34,9 +36,9 @@ const DevicePage = () => {
             <MyModal visible={createVis} setVisible={setCreateVis}>
                 
                 <CreateDeviceForm 
-                 
+                 setVisible={setCreateVis} visible={createVis}
                 />
-                </MyModal>
+            </MyModal>
              <div className={[ds.tail,ds.buttons,ds.df].join(' ')}>
              <MyButton 
              type={'success'} 
@@ -67,7 +69,18 @@ const DevicePage = () => {
         </div>
 
         <hr style={{width:'90%'}}/>
-         <div className={ds.tail}>список</div>
+         <div className={ds.tail}>
+            {isChipFetching?<MyLoader/>
+            :
+            
+            <DeviceTable device={device}/>
+            
+            
+            }
+            
+
+
+         </div>
         </div>
     );
 };

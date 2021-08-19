@@ -20,7 +20,7 @@ const CreateWorkerPlace = observer(({show,onHide}) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-        Добавить работника
+        Добавить участок
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

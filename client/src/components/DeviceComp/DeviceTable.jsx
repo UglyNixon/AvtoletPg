@@ -1,10 +1,10 @@
 import React from 'react';
 
-const DeviceTable = () => {
+const DeviceTable = ({device}) => {
     return (
-        <div>
-            
-        </div>
+      <div>
+          {device.map(d=><div key={d.id}>{d.series}</div>)}
+      </div>
     );
 };
 

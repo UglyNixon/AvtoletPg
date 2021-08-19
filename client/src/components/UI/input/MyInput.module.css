@@ -1,7 +1,13 @@
-.MyInput {
+.row {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  margin-top: 10px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
 }
 .MyInput__imp {
@@ -36,4 +42,8 @@
   box-shadow: 0 0 0 3px -moz-mac-focusring;
   color: #222;
   outline: none;
+}
+.column .MyInput__imp {
+  margin: 10px 0px;
+  width: 75px;
 }

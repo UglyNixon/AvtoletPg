@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState} from 'react';
 import { Button, Container, Dropdown, Spinner, Table } from 'react-bootstrap';
 import { Context } from '../..';
-import CreateRuchka from '../models/CreateRuchka';
+import CreateRuchka from './CreateRuchka';
 import styles from '../../styles/table.module.css';
 import { observer } from 'mobx-react-lite';
 import { fetchWorker } from '../../http/ProductApi';
 import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
 import { Fragment } from 'react';
-import RuchkaStats from '../models/RuchkaStats';
-import RuchkaEdit from '../models/RuchkaEdit';
+import RuchkaStats from './RuchkaStats';
+import RuchkaEdit from './RuchkaEdit';
 
 const RuchkaTable = observer(() => {
 

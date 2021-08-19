@@ -9,3 +9,6 @@
 .jc {
   justify-content: space-between;
 }
+.jc_e {
+  justify-content: flex-end;
+}

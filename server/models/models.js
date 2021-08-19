@@ -37,7 +37,7 @@ const Chip = sequelize.define('chip',{
 })
 const Device = sequelize.define('device',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
-    series:{type:DataTypes.INTEGER,allowNull:false},
+    series:{type:DataTypes.STRING,allowNull:false},
     totalValue:{type:DataTypes.INTEGER,unique:false,allowNull:false},
     type:{type:DataTypes.STRING,allowNull:false},
     typeCode:{type:DataTypes.STRING,allowNull:false},
