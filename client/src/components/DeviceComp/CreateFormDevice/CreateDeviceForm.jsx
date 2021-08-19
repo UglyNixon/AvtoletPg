@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2'
 import { createDevice } from '../../../http/deviceApi';
-import MyInput from '../input/MyInput';
-import MyInputsGroup from '../inputsGroup/MyInputsGroup';
+import MyInput from '../../UI/input/MyInput';
+import MyInputsGroup from '../../UI/inputsGroup/MyInputsGroup';
 
-import MyButton from '../MyButton/MyButton'
-import MySelect from '../select/MySelect';
+import MyButton from '../../UI/MyButton/MyButton'
+import MySelect from '../../UI/select/MySelect';
 import cl from './CreateDeviceForm.module.css'
 const CreateDeviceForm = ({visible,setVisible}) => {
     const [brakCode, setBrakCode] = useState({vis:false,title:'Добавить брак по коду'})

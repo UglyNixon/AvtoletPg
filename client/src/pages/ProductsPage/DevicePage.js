@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import DeviceTable from '../../components/DeviceComp/DeviceTable';
 import MyModal from '../../components/models/NotBtModals/MyModal';
-import CreateDeviceForm from '../../components/UI/CreateFormDeevice/CreateDeviceForm';
+import CreateDeviceForm from '../../components/DeviceComp/CreateFormDevice/CreateDeviceForm'
 import MyLoader from '../../components/UI/Loader/MyLoader';
-import MyButton from '../../components/UI/MyButton/MyButton';
+import MyButton from '../../components/UI/MyButton/MyButton'
 import { useFetching } from '../../hooks/useFetching';
 import {fetchDevices} from '../../http/deviceApi'
 import ds from './style/Device.module.css'
@@ -72,7 +72,9 @@ const DevicePage = () => {
          <div className={ds.tail}>
             {isChipFetching?<MyLoader/>
             :
-            
+            chipError ?
+            <div>Что-то пошло не так</div>
+            :
             <DeviceTable device={device}/>
             
             
