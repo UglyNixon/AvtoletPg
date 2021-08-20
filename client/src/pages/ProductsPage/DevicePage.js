@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import DeviceTable from '../../components/DeviceComp/DeviceTable/DeviceTable.jsx';
 import MyModal from '../../components/models/NotBtModals/MyModal';
 import CreateDeviceForm from '../../components/DeviceComp/CreateFormDevice/CreateDeviceForm'
@@ -8,8 +8,10 @@ import { useFetching } from '../../hooks/useFetching';
 import {fetchDevices} from '../../http/deviceApi'
 import ds from './style/Device.module.css'
 import { getPageCount } from '../../utils/pages.js';
+import { Context } from '../../index.js';
 const DevicePage = () => {
-    const [device,setDevice]=useState([])
+    const {device} = useContext(Context)
+    
     const [totalPages,setTotalPages]= useState(0)
     const [activeStatus, setActiveStatus] = useState('')
     const [page, setPage] = useState(1)
@@ -17,11 +19,11 @@ const DevicePage = () => {
     const [createVis,setCreateVis] =useState(false)
     const [fetchDevice,isChipFetching,chipError] = useFetching(async(limit,page)=>{
          const response = await fetchDevices(limit,page)
-         setDevice(response.rows)
+         device.setDevices(response.rows)
          setTotalPages(getPageCount(response.count,limit))
         })
         const changePage =(p)=>{
-            setPage(p);
+            device.setPage(p)
             fetchDevice(limit,p)
            }
 
@@ -63,7 +65,9 @@ const DevicePage = () => {
                     </span>
              <div className={activeStatus?[ds.accordion__content,ds[activeStatus]].join(' '):[ds.accordion__content].join(' ')}>
               <div className={[ds.df,ds.box].join(' ')}>
-              <div >плюс Экспресс</div>
+              <div>
+                  
+              </div>
               <div>2.6 2.7 124 126</div>
 
               </div>
@@ -79,7 +83,7 @@ const DevicePage = () => {
             chipError ?
             <div>Что-то пошло не так</div>
             :
-            <DeviceTable device={device} totalPages={totalPages} page={page} changePage={changePage} limit={limit}/>
+            <DeviceTable device={device.devices} totalPages={totalPages} page={device.page} changePage={changePage} limit={limit}/>
             
             
             }
