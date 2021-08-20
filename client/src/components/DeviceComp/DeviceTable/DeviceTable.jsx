@@ -1,10 +1,12 @@
 import React from 'react';
+import MyInput from '../../UI/input/MyInput';
 import Pagination from '../../UI/Pagination/Pagination';
 import cl from '../DeviceTable/DeviceTable.module.css'
 const DeviceTable = ({device,totalPages,changePage,page,limit}) => {
  
     return (
       <div>
+        <MyInput label='Вывод по' flextype='row'/>
         <Pagination totalPages={totalPages} page={page} changePage={changePage}/>
       <table className={cl.styled_table}>
        <thead>

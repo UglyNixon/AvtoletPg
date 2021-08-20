@@ -84,8 +84,6 @@ const DevicePage = () => {
             <div>Что-то пошло не так</div>
             :
             <DeviceTable device={device.devices} totalPages={totalPages} page={device.page} changePage={changePage} limit={limit}/>
-            
-            
             }
             
 
