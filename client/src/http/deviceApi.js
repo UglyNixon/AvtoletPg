@@ -8,9 +8,9 @@ import { $authHost,$host } from "./index"
 
 
 
-    export const fetchDevices= async(limit=10,page=1)=>{
+    export const fetchDevices= async(limit=10,page=2)=>{
     const {data} =await $host.get('api/device',
-    {params:{_limit:limit,_page:page}}
+    {params:{limit:limit,page:page}}
     )
     return data;
     }

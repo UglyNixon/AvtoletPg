@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import DeviceTable from '../../components/DeviceComp/DeviceTable';
+import DeviceTable from '../../components/DeviceComp/DeviceTable/DeviceTable.jsx';
 import MyModal from '../../components/models/NotBtModals/MyModal';
 import CreateDeviceForm from '../../components/DeviceComp/CreateFormDevice/CreateDeviceForm'
 import MyLoader from '../../components/UI/Loader/MyLoader';
@@ -7,6 +7,7 @@ import MyButton from '../../components/UI/MyButton/MyButton'
 import { useFetching } from '../../hooks/useFetching';
 import {fetchDevices} from '../../http/deviceApi'
 import ds from './style/Device.module.css'
+import { getPageCount } from '../../utils/pages.js';
 const DevicePage = () => {
     const [device,setDevice]=useState([])
     const [totalPages,setTotalPages]= useState(0)
@@ -16,10 +17,13 @@ const DevicePage = () => {
     const [createVis,setCreateVis] =useState(false)
     const [fetchDevice,isChipFetching,chipError] = useFetching(async(limit,page)=>{
          const response = await fetchDevices(limit,page)
-         setDevice(response)
-         console.log(response)
+         setDevice(response.rows)
+         setTotalPages(getPageCount(response.count,limit))
         })
-      
+        const changePage =(p)=>{
+            setPage(p);
+            fetchDevice(limit,p)
+           }
 
     const accordionMove=()=>{
         if (!activeStatus) setActiveStatus('active')
@@ -75,7 +79,7 @@ const DevicePage = () => {
             chipError ?
             <div>Что-то пошло не так</div>
             :
-            <DeviceTable device={device}/>
+            <DeviceTable device={device} totalPages={totalPages} page={page} changePage={changePage} limit={limit}/>
             
             
             }

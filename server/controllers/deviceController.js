@@ -31,7 +31,9 @@ class deviceController {
  
     async getAll(req,res,next) {
              try {
-                 let device =await Device.findAll({})
+                 const {limit,page}=req.query
+                 let offset =page * limit - limit
+                 let device =await Device.findAndCountAll({limit,offset})
                  res.json(device)
 
              } catch (error) {
