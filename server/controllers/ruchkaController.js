@@ -2,17 +2,42 @@ const {Ruchka, Defec} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const { Op } = require('sequelize')
 const fs = require('fs');
-const { Console } = require('console');
+
 
 
 class ruchkaController {
     async create (req,res,next){
         try {
-            const {series,totalValue,dolg,brak,status,date,workerId,productId}=req.body;
+            const {series,totalValue,dolg,brak,status,date,workerId,productId,defec}=req.body;
             const ruchka = await Ruchka.create({series,totalValue,status,date,workerId,productId,dolg,brak})
+            if (defec) {
+               
+               JSON.parse(defec)
+               .forEach(d =>
+                Defec.create({
+                        title: d.title,
+                        value: +d.value,
+                        ruchkaId: ruchka.id,
+                        productId:productId
+                    })
+                )
+            }
             try {
-                const {series,totalValue,status,date,workerId,productId} =req.body
+                const {series,totalValue,status,date,workerId,productId,defec} =req.body
                 const ruchka = await Ruchka.create({series,totalValue,status,date,workerId,productId})
+              
+                    if (defec) {
+                        JSON.parse(defec)
+                        .forEach(d =>
+                        Defec.create({
+                                title: d.title,
+                                value: +d.value,
+                                ruchkaId: ruchka.id,
+                                productId:productId
+                            })
+                        )
+                    }
+                
             }finally{
             
             return res.json(ruchka)
@@ -21,18 +46,20 @@ class ruchkaController {
             next(ApiError.badRequest(error.message))
         }
     }
+
     async forceCreate (req,res,next) {
         try {
-            
-
-
             return res.json('done')
         } catch (error) {
             next(ApiError.badRequest(error.message))
         }
     }
+
+
     async getAll(req,res) {
-            let ruchki = await Ruchka.findAll()
+            let ruchki = await Ruchka.findAll({
+                include: [{model: Defec, as: 'defec'}]
+            })
             res.json(ruchki)
     }
     async getOne(req,res) {
@@ -45,7 +72,6 @@ class ruchkaController {
     async filter(req,res,next) {
                 try {
                    let {dolg,brak,status,date,workerId}=req.query;
-                  
                    let workerSearch = workerId == 'Все'? {[Op.ne]:0}:{[Op.eq]:workerId} 
                    let dolgSearch = dolg =='Все' ? {[Op.ne]:-1} : dolg == "Есть" ? {[Op.gt]:0} :{[Op.eq]:0} 
                    let brakSearch = brak == 'Все' ? {[Op.ne]:-1} : /99/.test(brak)? {[Op.between]:[1,99]} :{[Op.gt]:99}
@@ -81,10 +107,10 @@ class ruchkaController {
     async edit (req,res,next) {
 
         try {
-            let {dolg,brak,date,workerId,newSeries,totalValue,series}=req.body;
-            console.log(series,newSeries,totalValue,dolg,brak,date)
+            let {dolg,brak,date,workerId,newSeries,totalValue,series,defec,id,productId}=req.body;
+          
             const newData = await Ruchka.update(
-                {series:+newSeries,
+                    {series:+newSeries,
                     dolg:+dolg,
                     brak:+brak,
                     date:date,
@@ -92,6 +118,29 @@ class ruchkaController {
                     totalValue:+totalValue
                 }
                 ,{where :{series:series}})
+                
+            if (defec) {
+                    defec = JSON.parse(defec)
+                    let defecTypes=defec.map(d=>d.title)
+                     defec.forEach(async (d)=>{
+                    let temp =  await Defec.findOne({
+                        where:{ruchkaId:id,title:d.title}
+                    })
+                    if (temp) {
+                        temp.value=d.value
+                        await temp.save();
+                    }else {
+                        await Defec.create({
+                            title: d.title,
+                            value: +d.value,
+                            ruchkaId: +id,
+                            productId:productId
+    
+                        })
+                    }
+                                
+                })
+            }
             return res.json(newSeries)
         } catch (error) {
             next(ApiError.badRequest(error.message)) 

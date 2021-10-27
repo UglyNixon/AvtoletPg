@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Button, Col, Container, Dropdown, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
+import {  Button, Col, Container, Dropdown, Form,  Modal, Row } from 'react-bootstrap';
 import { Context } from '../..';
 
-import { Check } from '../../helpers/littleFunc';
+import { Check,  defCheckForm } from '../../helpers/littleFunc';
 import { editRuchka, fetchOneRuchka, fetchRuchka } from '../../http/ruchkaApi';
+import MyDatalist from '../UI/datalist/MyDatalist';
 // Сделать запрет на выбор несуществующей серии!!!!!!!!!!!!!!!!!!!!!!!! вроде ок
 const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
   const{ruchki,product} =useContext(Context)
@@ -17,20 +18,37 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
   const [newDolg,setNewDolg]=useState(ruchki.ruchka.dolg)
   const [newTotalValue,setNewTotalValue]=useState(ruchki.ruchka.totalValue)
   const [newDate,setNewDate]=useState(ruchki.ruchka.date)
+  const [defec, setDefec] = useState([])
+  // const [defecType,setDefecType] = useState([])
+ 
+  const changeDefec = (key, value, number) => {
+    setDefec(defec.map(i => i.number === number ? {...i, [key]: value} : i))
+    
+ }
+  const deleteDefec =(number) =>{
+    setDefec(defec.filter(d => d.number !== number))
+  }
+  const addDefec =() =>{
+    setDefec([...defec,{title:'',value:'', number: Date.now()}]);
+  }
   useEffect(()=>{
     setNewSeries(ruchki.ruchka.series)
     setNewBrak(ruchki.ruchka.brak)
     setNewDolg(ruchki.ruchka.dolg)
     setNewTotalValue(ruchki.ruchka.totalValue)
     setNewDate(ruchki.ruchka.date)
+    
   },[ruchki.ruchka])
   const errorStyle={
     textDecorationLine: 'underline',
     textDecorationColor: 'red',
   }
   const makeChange=()=>{
-    
-   const formData= new FormData()
+  if (!defCheckForm(defec)) {
+    console.log('не прошло')
+    return
+  }
+  const formData= new FormData()
   formData.append('newSeries',+newSeries)    
   formData.append('series',ruchki.ruchka.series)    
   formData.append('brak',+newBrak)    
@@ -38,17 +56,14 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
   formData.append('totalValue',+newTotalValue)    
   formData.append('date',newDate)  
   formData.append('workerId',product.selectedWorker.id)  
+  formData.append('defec', JSON.stringify(defec))
+  formData.append('id',ruchki.ruchka.id)
+  formData.append ('productId',product.products.filter(item=>item.title==='Ручки')[0].id)
  
   editRuchka(formData).then(data=>{alert('Данные внесены');setFormVis(false); setRead(false);setSerSearch(data)})
-  .then(()=>fetchRuchka() .then(data=>{
+  .then(()=>fetchRuchka().then(data=>{
     ruchki.setRuchki(data.sort((a,b)=>b.series-a.series))
    }))
-  
-  
-
-    
-   
-    
   }
   const inputChange = (value)=>{
    if (value.length===0) {truchka.series=''}
@@ -63,7 +78,14 @@ const RuchkaEdit = observer(({show,onHide,workers,truchka}) => {
      if (ruchki.ruchki.filter(r=>r.series==value).length==0) {alert('Такой серии не существует(');setSerSearch('');return}
     setError({})
     setRead(true)
-    fetchOneRuchka(value).then(data=>{ruchki.setRuchka(data);product.setSelectedWorker(workers.filter(w=>w.id===ruchki.ruchka.workerId)[0]);setFormVis(true)})
+    fetchOneRuchka(value)
+    .then(data=>{ruchki.setRuchka(data);
+      let arr=[]
+      ruchki.ruchka.defec.forEach((d,i)=>arr.push({title:d.title,value:d.value,number:Date.now()+i}))
+      setDefec(arr)
+      
+      ;product.setSelectedWorker(workers.filter(w=>w.id===ruchki.ruchka.workerId)[0]);})
+      .then(()=>setFormVis(true))
     
   } 
 
@@ -157,6 +179,27 @@ formVis&& <Container className='mt-2 p-0'>
       <Form.Control type="text" placeholder="MM/YY"  value={newDate} onChange={(e)=>setNewDate(e.target.value)} />
     </Col>
   </Form.Group>
+<hr/>
+<Button variant="success" onClick={()=>addDefec()}>Добавить вид несоответствия</Button>
+{
+    defec.map(d=>
+  <Row className="mt-2" key={d.number}>
+    <Col sm="7">
+    <MyDatalist defecType={ruchki.defecTypes} default={d.title} change={changeDefec} defec={defec} number={d.number}/>
+    </Col>
+    <Col sm='2'>
+    <Form.Control type="text" placeholder="0-1000" value={d.value} onChange={(e)=> changeDefec('value',e.target.value,d.number)}/>
+    </Col>
+    <Col sm="3">
+      <Button variant='danger' onClick={()=>deleteDefec(d.number)}>удалить</Button>
+    </Col>
+  </Row>
+  
+    
+    )
+  }
+
+
  </Container>
 
 
@@ -165,7 +208,7 @@ formVis&& <Container className='mt-2 p-0'>
       </Modal.Body>
       <Modal.Footer>
       {formVis &&  <Button variant="success"  onClick={()=>makeChange()}>Внести изменения</Button> }
-        <Button variant="warning"  onClick={()=>{setSerSearch('');setError({});setFormVis(false);onHide();setRead(false)}}>Закрыть</Button>
+        <Button variant="warning"  onClick={()=>{setSerSearch('');setError({});setFormVis(false);setDefec([]);onHide();setRead(false)}}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
   );

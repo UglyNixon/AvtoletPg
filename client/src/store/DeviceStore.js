@@ -4,7 +4,6 @@ export default class DeviceStore {
 
         constructor() {
             this._devices=[
-              
             ]
             this._device =[]
             this._page= 1;

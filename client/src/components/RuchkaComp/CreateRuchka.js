@@ -1,15 +1,35 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Dropdown, Form, FormControl, InputGroup, Modal } from 'react-bootstrap';
+import { Button, Col, Dropdown, Form, FormControl, InputGroup, Modal, Row } from 'react-bootstrap';
 import { Context } from '../..';
+
 
 import { fetchProducts } from '../../http/ProductApi';
 import { createRuchka } from '../../http/ruchkaApi';
+import MyDatalist from '../UI/datalist/MyDatalist';
 
 const CreateRuchka = observer(({show,onHide,workers}) => {
-    const {product} = useContext(Context)
+
+  const {ruchki,product}=useContext(Context)
+
+  const [defec, setDefec] = useState([])
+  const [defecType,setDefecType] = useState([])
+  const addDefec =() =>{
+    setDefec([...defec,{title:'',value:'', number: Date.now()}]);
+  }
+  const changeDefec = (key, value, number) => {
+    setDefec(defec.map(i => i.number === number ? {...i, [key]: value} : i))
+    
+ }
+  const deleteDefec =(number) =>{
+    setDefec(defec.filter(d => d.number !== number))
+  }
+  
   useEffect(()=>{
-    fetchProducts().then(data=>product.setProducts(data))
+    fetchProducts()
+    .then(data=>product.setProducts(data))
+  
+    
   },[product])
    const [series,setSeries]= useState('')
    const [totalValue,setTotalValue]=useState(1000)
@@ -30,11 +50,16 @@ const CreateRuchka = observer(({show,onHide,workers}) => {
     formData.append ('date',date)
     formData.append ('workerId',product.selectedWorker.id)
     formData.append ('productId',product.products.filter(item=>item.title==='Ручки')[0].id)
+    formData.append('defec', JSON.stringify(defec))
     createRuchka(formData)
         .then(()=>alert('Готово!'))
         .then(()=>onHide())
         .catch(error => alert(error.message));
   }}
+  const close =()=>{
+    setDefec([])
+    onHide()
+  }
     return ( 
     <Modal
       show={show}
@@ -123,13 +148,30 @@ const CreateRuchka = observer(({show,onHide,workers}) => {
   </Dropdown.Toggle>
 
   <Dropdown.Menu>
-
     <Dropdown.Item onClick={()=>setStatus(true)}>Собран</Dropdown.Item>
     <Dropdown.Item onClick={()=>setStatus(false)}>В работе</Dropdown.Item>
   </Dropdown.Menu>
-</Dropdown>
-
+  </Dropdown>
     </InputGroup>
+    <hr/>
+    <Button variant="success" onClick={()=>addDefec()}>Добавить вид несоответствия</Button>
+  {
+    defec.map(d=>
+  <Row className="mt-2" key={d.number}>
+    <Col sm="7">
+    <MyDatalist defecType={ruchki.defecTypes} change={changeDefec} defec={defec} number={d.number}/>
+    </Col>
+    <Col sm='2'>
+    <Form.Control type="text" placeholder="0-1000" onChange={(e)=> changeDefec('value',e.target.value,d.number)}/>
+    </Col>
+    <Col sm="3">
+      <Button variant='danger' onClick={()=>deleteDefec(d.number)}>удалить</Button>
+    </Col>
+  </Row>
+  
+    
+    )
+  }
     </Form>
     
    
@@ -137,7 +179,7 @@ const CreateRuchka = observer(({show,onHide,workers}) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="success" onClick={()=>addRuchka()}>Добавить</Button>
-        <Button variant="warning" onClick={onHide}>Закрыть</Button>
+        <Button variant="warning" onClick={()=>close()}>Закрыть</Button>
       </Modal.Footer>
     </Modal>
         

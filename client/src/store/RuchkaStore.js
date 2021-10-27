@@ -1,19 +1,23 @@
 
 import {makeAutoObservable} from 'mobx'
+
 export default class RuchkaStore {
 
         constructor() {
-            this._ruchki=[
-              
-            ]
+            this._ruchki=[]
+            this._allCount=0
+            this._defecCount=0
             this._ruchka =[]
             this._dates=[]
-            makeAutoObservable(this)
             this._workers=[]
+            this._defecTypes =[]
+            this._defecStats=[]
+            makeAutoObservable(this)
         }
         
         setRuchki (ruchki) {
             this._ruchki=ruchki
+            this._allCount=ruchki.reduce((prev,ruchka)=>prev+ruchka.totalValue,0)
         }
         setDates (dates) {
             this._dates=dates
@@ -32,6 +36,13 @@ export default class RuchkaStore {
         setRuchka(ruchka){
             this._ruchka=ruchka
         }
+        setDefecTypes(defec) {
+            this._defecTypes =defec
+        }
+        setDefecStats(data) {
+            this._defecStats =data
+            this._defecCount = data.reduce((sum,prev)=>sum+prev.value,0)
+        }
 
         get ruchka (){
             return this._ruchka
@@ -46,6 +57,18 @@ export default class RuchkaStore {
      get workers (){
          return this._workers
      }
+     get defecTypes(){
+         return this._defecTypes
+     }
+     get defecStats(){
+         return this._defecStats
+     }
+     get allCount(){
+         return this._allCount
+     }
+      get defecCount(){
+          return this._defecCount
+      }
        
 
 }

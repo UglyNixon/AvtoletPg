@@ -43,4 +43,9 @@ const Stat = {
     }
 
 }
-export {Check,Stat,workerFilter};
+// допилить валидацию
+const defCheckForm = (arr) =>{
+
+return true
+}
+export {Check,Stat,workerFilter,defCheckForm};

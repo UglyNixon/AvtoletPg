@@ -5,10 +5,14 @@ import { Button, Dropdown, Form, Modal, Row, Tab, Table, Tabs } from 'react-boot
 import { useHistory } from 'react-router-dom';
 import { Context } from '../..';
 import {  Stat, workerFilter } from '../../helpers/littleFunc';
+import { fecthDefecStats } from '../../http/defecApi';
 import { WORKER_ROUTE } from '../../utils/constant';
 
 
 const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
+ 
+  const {ruchki,product}=useContext(Context)
+ 
   let ruchkiTemp=cruchki.slice(0)
   const history = useHistory()
   const [date,setDate] = useState('Все') 
@@ -19,8 +23,10 @@ const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
   });
   dateSet=Array.from(dateSet.add('Все'))
   let total = Stat.made('totalValue',workerFilter(ruchkiTemp))
+  
+
+  //это мне тут зачем было нужно?
   const dateFilter =(date)=>{
-   
   }
  
     return (
@@ -79,7 +85,7 @@ const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
  
 
     <tr>
-      <td>1</td>
+      <td>1.</td>
       <td>Все</td>
       <td>{`${total} / ${(total/total*100).toFixed(2)}%`}</td>
       <td>{`${Stat.made('dolg',workerFilter(ruchkiTemp))} / ${Stat.count('dolg',workerFilter(ruchkiTemp))}`}</td>
@@ -88,7 +94,7 @@ const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
   {
    cworkers.filter((w)=>w.workerPlaceId===2).map((w,i)=>
       <tr key={w.id}>
-        <td>{i+2}</td>
+        <td>{i+2}.</td>
         <td  style={{cursor:'pointer'}} onClick={()=>history.push(WORKER_ROUTE+`/`+w.id)}>{`${w.surname} ${w.name}`}</td>
         <td>{`${Stat.made('totalValue',workerFilter(ruchkiTemp,w.id))} / ${(Stat.made('totalValue',workerFilter(ruchkiTemp,w.id))/total*100).toFixed(2)}%`}</td>
         <td>{`${Stat.made('dolg',workerFilter(ruchkiTemp,w.id))} / ${Stat.count('dolg',workerFilter(ruchkiTemp,w.id))}`}</td>
@@ -102,9 +108,44 @@ const RuchkaStats = observer(({show,onHide,cruchki,cworkers}) => {
     
   </Tab>
   <Tab eventKey="profile" title="Виды Брака">
-<div style={{height:380}} className='d-flex align-items-center justify-content-center'>
-  В разработке ;)
-</div>
+  
+   <Table striped bordered hover id='table'>
+   <thead>
+   <tr>
+   <th>#</th>
+   <th>Вид брака</th>
+   <th>Кол-во<br/>
+   шт.
+   </th>
+   <th>доля от всех ручек<br/>
+    %
+   </th>
+   <th>доля от брака<br/>
+   % 
+   </th>
+ </tr>
+</thead>
+<tbody>
+{
+  ruchki.defecStats.map((d,i)=>
+  <tr key={d.title}>
+    <td>{i+1}.</td>
+    <td>{`${d.title[0].toUpperCase()}${d.title.slice(1)}`}</td>
+    <td>{d.value}</td>
+    <td>{((d.value/(ruchki.allCount))*100).toFixed(3)} %</td>
+    <td>{((d.value/ruchki.defecCount)*100).toFixed(3)} %</td>
+
+
+  </tr>
+  
+  
+  )
+}
+
+
+</tbody>
+</Table>
+   
   </Tab>
   
 </Tabs>

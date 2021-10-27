@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React, {  useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Image, ListGroup, Row, Spinner } from 'react-bootstrap';
+import { Button, Card, Container,  ListGroup,  Spinner } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { fetchOneWorker, fetchWorker, fetchWorkerPlace, forceBackupUseFile } from '../http/ProductApi';
+import { fetchOneWorker,  fetchWorkerPlace, } from '../http/ProductApi';
 import { PERSONAL_ROUTE } from '../utils/constant';
 
 const WorkerPage = observer(() => {
@@ -32,7 +32,6 @@ const WorkerPage = observer(() => {
   )
 } else {
   if(!worker.id) return ( 
-
     <Container className="mt-3">
     <Card style={{maxWidth:600}}>
     <Card.Title className='ml-4 mt-2'>Карточка работника</Card.Title>

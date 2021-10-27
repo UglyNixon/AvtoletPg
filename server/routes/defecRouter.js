@@ -5,6 +5,8 @@ const checkRoleMiddleWare = require('../middleware/checkRoleMiddleWare');
 
 router.post('/',checkRoleMiddleWare('ADMIN'),defecController.create)
 router.get('/',defecController.getAll)
+router.get('/:typeId',defecController.getTypes)
+router.get('/stats/:typeId',defecController.getStats)
 
 
 

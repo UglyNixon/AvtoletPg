@@ -9,17 +9,17 @@ import { fetchRuchka, filterRuchka } from '../../http/ruchkaApi';
 import { Fragment } from 'react';
 import RuchkaStats from './RuchkaStats';
 import RuchkaEdit from './RuchkaEdit';
+import { fecthDefecStats, fetchDefecTypes } from '../../http/defecApi';
 
 const RuchkaTable = observer(() => {
-
+  const {ruchki,product}=useContext(Context)
    
    const [modVis,setModVis]= useState(false)
    const [editVis,setEditVis]= useState(false)
    const [statVis,setStatVis]= useState(false)
-   const {ruchki,product}=useContext(Context)
+
    const [loading,setLoading]=useState(true)
    const [filter,setFilter] =useState({workerName:'Все',dolg:'Все',status:'Все',brak:'Все',sort:'Убыв',date:'Все'})
- 
    const [editRuchka,setEditRuchka]=useState({series:''})
    const [cworkers,setCworkers]=useState([])
    const [cruchki,setCruchki]=useState([])
@@ -53,9 +53,16 @@ const RuchkaTable = observer(() => {
      set.unshift('Все')
      ruchki.setDates(set)
    })
+   .then(()=>{
+    fetchDefecTypes(ruchki.ruchki[0].productId)
+    .then(data=>{ruchki.setDefecTypes(data)})
+   })
+   .then(()=>{
+     fecthDefecStats(ruchki.ruchki[0].productId)
+     .then(data=>ruchki.setDefecStats(data))
+   })
    .finally(()=>setLoading(false))
    ,[])
-
 
 
    const openEdit=(ruchka={series:''})=>{

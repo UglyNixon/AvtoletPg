@@ -90,6 +90,19 @@ const BackupTable = sequelize.define ('backupTable',{
 },{
     timestamps: false  
 })
+const Material = sequelize.define ('material',{
+    id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+    title:{type:DataTypes.STRING,allowNull:false},
+    series:{type:DataTypes.STRING,allowNull:false},
+},{
+    timestamps: false  
+})
+const MaterialProd = sequelize.define('material_prod', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+},{
+    timestamps: false  
+})
+
 
 Product.hasMany(Ruchka);
 Ruchka.belongsTo(Product);
@@ -102,6 +115,7 @@ Defec.belongsTo(Ruchka)
 
 Chip.hasMany(Defec,{as:'defec'});
 Defec.belongsTo(Chip)
+
 Device.hasMany(Defec,{as:'defec'});
 Defec.belongsTo(Device)
 
@@ -110,6 +124,12 @@ Worker.belongsTo(WorkerPlace);
 
 Product.hasMany(BackupTable);
 BackupTable.belongsTo(Product)
+
+Product.hasMany(Defec);
+Defec.belongsTo(Product)
+
+Material.belongsToMany(Ruchka, {through: MaterialProd })
+Ruchka.belongsToMany(Material, {through: MaterialProd })
 
 module.exports= {
     Worker,
@@ -120,5 +140,6 @@ module.exports= {
     WorkerPlace,
     BackupTable,
     Chip,
-    Device
+    Device,
+    Material,
 }
